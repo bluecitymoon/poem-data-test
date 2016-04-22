@@ -1,6 +1,7 @@
 package com.tadpole.poem.service;
 
 import com.tadpole.poem.domain.DetailResource;
+import com.tadpole.poem.domain.Job;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,7 +14,7 @@ public interface DetailResourceService {
 
     /**
      * Save a detailResource.
-     * 
+     *
      * @param detailResource the entity to save
      * @return the persisted entity
      */
@@ -21,7 +22,7 @@ public interface DetailResourceService {
 
     /**
      *  Get all the detailResources.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
@@ -29,7 +30,7 @@ public interface DetailResourceService {
 
     /**
      *  Get the "id" detailResource.
-     *  
+     *
      *  @param id the id of the entity
      *  @return the entity
      */
@@ -37,8 +38,10 @@ public interface DetailResourceService {
 
     /**
      *  Delete the "id" detailResource.
-     *  
+     *
      *  @param id the id of the entity
      */
     void delete(Long id);
+
+    boolean grabAllDetailLinks(Job job);
 }

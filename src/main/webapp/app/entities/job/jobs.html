@@ -20,6 +20,7 @@
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="name"><span>Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="identifier"><span>Identifier</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="locked"><span>Locked</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="description"><span>Description</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="target"><span>Target</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -32,6 +33,7 @@
                 <tr ng-repeat="job in vm.jobs track by job.id">
                     <td><a ui-sref="job-detail({id:job.id})">{{job.id}}</a></td>
                     <td>{{job.name}}</td>
+                    <td>{{job.identifier}}</td>
                     <td>{{job.locked}}</td>
                     <td>{{job.description}}</td>
                     <td>{{job.target}}</td>

@@ -83,6 +83,7 @@
                         entity: function () {
                             return {
                                 name: null,
+                                identifier: null,
                                 locked: null,
                                 description: null,
                                 target: null,

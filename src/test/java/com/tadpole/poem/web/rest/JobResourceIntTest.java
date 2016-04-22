@@ -50,6 +50,8 @@ public class JobResourceIntTest {
 
     private static final String DEFAULT_NAME = "AAAAA";
     private static final String UPDATED_NAME = "BBBBB";
+    private static final String DEFAULT_IDENTIFIER = "AAAAA";
+    private static final String UPDATED_IDENTIFIER = "BBBBB";
 
     private static final Boolean DEFAULT_LOCKED = false;
     private static final Boolean UPDATED_LOCKED = true;
@@ -96,6 +98,7 @@ public class JobResourceIntTest {
     public void initTest() {
         job = new Job();
         job.setName(DEFAULT_NAME);
+        job.setIdentifier(DEFAULT_IDENTIFIER);
         job.setLocked(DEFAULT_LOCKED);
         job.setDescription(DEFAULT_DESCRIPTION);
         job.setTarget(DEFAULT_TARGET);
@@ -120,6 +123,7 @@ public class JobResourceIntTest {
         assertThat(jobs).hasSize(databaseSizeBeforeCreate + 1);
         Job testJob = jobs.get(jobs.size() - 1);
         assertThat(testJob.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testJob.getIdentifier()).isEqualTo(DEFAULT_IDENTIFIER);
         assertThat(testJob.isLocked()).isEqualTo(DEFAULT_LOCKED);
         assertThat(testJob.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testJob.getTarget()).isEqualTo(DEFAULT_TARGET);
@@ -139,6 +143,7 @@ public class JobResourceIntTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(job.getId().intValue())))
                 .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].identifier").value(hasItem(DEFAULT_IDENTIFIER.toString())))
                 .andExpect(jsonPath("$.[*].locked").value(hasItem(DEFAULT_LOCKED.booleanValue())))
                 .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
                 .andExpect(jsonPath("$.[*].target").value(hasItem(DEFAULT_TARGET.toString())))
@@ -158,6 +163,7 @@ public class JobResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(job.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+            .andExpect(jsonPath("$.identifier").value(DEFAULT_IDENTIFIER.toString()))
             .andExpect(jsonPath("$.locked").value(DEFAULT_LOCKED.booleanValue()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.target").value(DEFAULT_TARGET.toString()))
@@ -185,6 +191,7 @@ public class JobResourceIntTest {
         Job updatedJob = new Job();
         updatedJob.setId(job.getId());
         updatedJob.setName(UPDATED_NAME);
+        updatedJob.setIdentifier(UPDATED_IDENTIFIER);
         updatedJob.setLocked(UPDATED_LOCKED);
         updatedJob.setDescription(UPDATED_DESCRIPTION);
         updatedJob.setTarget(UPDATED_TARGET);
@@ -201,6 +208,7 @@ public class JobResourceIntTest {
         assertThat(jobs).hasSize(databaseSizeBeforeUpdate);
         Job testJob = jobs.get(jobs.size() - 1);
         assertThat(testJob.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testJob.getIdentifier()).isEqualTo(UPDATED_IDENTIFIER);
         assertThat(testJob.isLocked()).isEqualTo(UPDATED_LOCKED);
         assertThat(testJob.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testJob.getTarget()).isEqualTo(UPDATED_TARGET);

@@ -11,6 +11,9 @@
         {
             "fieldName": "name",
             "fieldType": "String"
+        },{
+            "fieldName": "identifier",
+            "fieldType": "String"
         },
         {
             "fieldName": "locked",

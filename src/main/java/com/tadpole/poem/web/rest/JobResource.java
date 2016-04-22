@@ -131,6 +131,9 @@ public class JobResource {
     public ResponseEntity<Job> startJob(@PathVariable Long id) {
         log.debug("starting Job : {}", id);
         Job job = jobService.findOne(id);
+
+        jobService.start(job);
+
         return Optional.ofNullable(job)
             .map(result -> new ResponseEntity<>(
                 result,

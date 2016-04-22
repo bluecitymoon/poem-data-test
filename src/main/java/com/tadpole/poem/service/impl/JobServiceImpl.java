@@ -3,6 +3,7 @@ package com.tadpole.poem.service.impl;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.tadpole.poem.service.DetailResourceService;
 import com.tadpole.poem.service.JobService;
 import com.tadpole.poem.domain.Job;
 import com.tadpole.poem.repository.JobRepository;
@@ -31,6 +32,9 @@ public class JobServiceImpl implements JobService {
 
     @Inject
     private JobRepository jobRepository;
+
+    @Inject
+    private DetailResourceService detailResourceService;
 
     /**
      * Save a job.
@@ -85,9 +89,11 @@ public class JobServiceImpl implements JobService {
 
         job.setLastStart(ZonedDateTime.now());
 
+        switch (job.getIdentifier()) {
+            case "POEM-DETAIL":
 
-        switch (job.getDescription()) {
-            case "POEM":
+                detailResourceService.grabAllDetailLinks(job);
+
                 break;
             default:
                 break;

@@ -25,6 +25,10 @@
                 <constraints nullable="true" />
             </column>
             
+            <column name="identifier" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            
             <column name="locked" type="bit">
                 <constraints nullable="true" />
             </column>

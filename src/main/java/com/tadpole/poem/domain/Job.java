@@ -25,6 +25,9 @@ public class Job implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "identifier")
+    private String identifier;
+
     @Column(name = "locked")
     private Boolean locked;
 
@@ -58,6 +61,14 @@ public class Job implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public Boolean isLocked() {
@@ -133,6 +144,7 @@ public class Job implements Serializable {
         return "Job{" +
             "id=" + id +
             ", name='" + name + "'" +
+            ", identifier='" + identifier + "'" +
             ", locked='" + locked + "'" +
             ", description='" + description + "'" +
             ", target='" + target + "'" +
