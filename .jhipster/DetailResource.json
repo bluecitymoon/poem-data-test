@@ -1,0 +1,26 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "url",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "outsideId",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "visitCount",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "active",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20160422063355",
+    "dto": "no",
+    "service": "serviceImpl",
+    "entityTableName": "detail_resource",
+    "pagination": "pagination"
+}

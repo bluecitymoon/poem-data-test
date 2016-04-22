@@ -1,0 +1,41 @@
+{
+    "relationships": [
+        {
+            "relationshipName": "jobLog",
+            "otherEntityName": "jobLog",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "job"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "locked",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "target",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lastStart",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "lastStop",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20160422014517",
+    "dto": "no",
+    "service": "serviceImpl",
+    "entityTableName": "job",
+    "pagination": "pagination"
+}

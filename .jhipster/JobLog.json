@@ -1,0 +1,34 @@
+{
+    "relationships": [
+        {
+            "relationshipName": "job",
+            "otherEntityName": "job",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "name"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "result",
+            "fieldType": "JobExecutionResult",
+            "fieldValues": "fail,success,uknown"
+        },
+        {
+            "fieldName": "start",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "end",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "message",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20160422014016",
+    "dto": "no",
+    "service": "serviceImpl",
+    "entityTableName": "job_log",
+    "pagination": "pagination"
+}

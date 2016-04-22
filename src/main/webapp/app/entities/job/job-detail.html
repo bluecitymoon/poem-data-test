@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span>Job</span> {{vm.job.id}}</h2>
+    <hr>
+    <dl class="dl-horizontal">
+        <dt><span>Name</span></dt>
+        <dd>
+            <span>{{vm.job.name}}</span>
+        </dd>
+        <hr>
+        <dt><span>Locked</span></dt>
+        <dd>
+            <span>{{vm.job.locked}}</span>
+        </dd>
+        <hr>
+        <dt><span>Description</span></dt>
+        <dd>
+            <span>{{vm.job.description}}</span>
+        </dd>
+        <hr>
+        <dt><span>Target</span></dt>
+        <dd>
+            <span>{{vm.job.target}}</span>
+        </dd>
+        <hr>
+        <dt><span>Last Start</span></dt>
+        <dd>
+            <span>{{vm.job.lastStart | date:'medium'}}</span>
+        </dd>
+        <hr>
+        <dt><span>Last Stop</span></dt>
+        <dd>
+            <span>{{vm.job.lastStop | date:'medium'}}</span>
+        </dd>
+        <hr>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+</div>

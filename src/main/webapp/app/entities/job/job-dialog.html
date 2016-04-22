@@ -1,0 +1,70 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myJobLabel">Create or edit a Job</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.job.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.job.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.job.name"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_locked">Locked</label>
+            <input type="checkbox" class="form-control" name="locked" id="field_locked"
+                    ng-model="vm.job.locked"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                    ng-model="vm.job.description"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_target">Target</label>
+            <input type="text" class="form-control" name="target" id="field_target"
+                    ng-model="vm.job.target"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_lastStart">Last Start</label>
+                <div class="input-group">
+                    <input id="field_lastStart" type="text" class="form-control" name="lastStart" datetime-picker="{{dateformat}}" ng-model="vm.job.lastStart" is-open="vm.datePickerOpenStatus.lastStart"
+                      />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('lastStart')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_lastStop">Last Stop</label>
+                <div class="input-group">
+                    <input id="field_lastStop" type="text" class="form-control" name="lastStop" datetime-picker="{{dateformat}}" ng-model="vm.job.lastStop" is-open="vm.datePickerOpenStatus.lastStop"
+                      />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('lastStop')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>
