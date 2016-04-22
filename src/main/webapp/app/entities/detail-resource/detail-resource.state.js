@@ -86,6 +86,7 @@
                                 outsideId: null,
                                 visitCount: null,
                                 active: null,
+                                title: null,
                                 id: null
                             };
                         }

@@ -106,6 +106,7 @@ public class GrabPageProcessor {
                 DetailResource resource = new DetailResource();
                 resource.setUrl(anchor.getHrefAttribute());
                 resource.setOutsideId(MathUtil.getNumber(anchor.getHrefAttribute()).toString());
+                resource.setTitle(anchor.getTextContent());
 
                 return resource;
 

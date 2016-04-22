@@ -30,6 +30,9 @@ public class DetailResource implements Serializable {
     @Column(name = "active")
     private Boolean active;
 
+    @Column(name = "title")
+    private String title;
+
     public Long getId() {
         return id;
     }
@@ -70,6 +73,14 @@ public class DetailResource implements Serializable {
         this.active = active;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -98,6 +109,7 @@ public class DetailResource implements Serializable {
             ", outsideId='" + outsideId + "'" +
             ", visitCount='" + visitCount + "'" +
             ", active='" + active + "'" +
+            ", title='" + title + "'" +
             '}';
     }
 }
