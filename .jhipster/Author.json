@@ -31,6 +31,10 @@
         {
             "fieldName": "avatarFileName",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "link",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20160425032338",

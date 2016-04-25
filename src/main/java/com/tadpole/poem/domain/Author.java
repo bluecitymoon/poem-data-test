@@ -39,6 +39,9 @@ public class Author implements Serializable {
     @Column(name = "avatar_file_name")
     private String avatarFileName;
 
+    @Column(name = "link")
+    private String link;
+
     @OneToMany(mappedBy = "author")
     @JsonIgnore
     private Set<Poem> poems = new HashSet<>();
@@ -99,6 +102,14 @@ public class Author implements Serializable {
         this.avatarFileName = avatarFileName;
     }
 
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
     public Set<Poem> getPoems() {
         return poems;
     }
@@ -137,6 +148,7 @@ public class Author implements Serializable {
             ", zi='" + zi + "'" +
             ", hao='" + hao + "'" +
             ", avatarFileName='" + avatarFileName + "'" +
+            ", link='" + link + "'" +
             '}';
     }
 }
