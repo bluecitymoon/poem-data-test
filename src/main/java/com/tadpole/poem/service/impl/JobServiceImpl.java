@@ -7,6 +7,7 @@ import com.tadpole.poem.service.DetailResourceService;
 import com.tadpole.poem.service.JobService;
 import com.tadpole.poem.domain.Job;
 import com.tadpole.poem.repository.JobRepository;
+import com.tadpole.poem.service.PoemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,7 @@ import java.util.List;
  * Service Implementation for managing Job.
  */
 @Service
-@Transactional
+//@Transactional
 public class JobServiceImpl implements JobService {
 
     private final Logger log = LoggerFactory.getLogger(JobServiceImpl.class);
@@ -35,6 +36,9 @@ public class JobServiceImpl implements JobService {
 
     @Inject
     private DetailResourceService detailResourceService;
+
+    @Inject
+    private PoemService poemService;
 
     /**
      * Save a job.
@@ -93,6 +97,20 @@ public class JobServiceImpl implements JobService {
             case "POEM-DETAIL":
 
                 detailResourceService.grabAllDetailLinks(job);
+
+                job.setLastStop(ZonedDateTime.now());
+
+                jobRepository.save(job);
+
+                break;
+
+            case "POEM-CONTENT":
+
+                poemService.grabAllPoems(job);
+
+                job.setLastStop(ZonedDateTime.now());
+
+                jobRepository.save(job);
 
                 break;
             default:

@@ -1,19 +1,18 @@
 package com.tadpole.poem.service.util;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlParagraph;
+import com.tadpole.poem.domain.Author;
 import com.tadpole.poem.domain.DetailResource;
 import com.tadpole.poem.domain.Job;
-import org.apache.commons.lang3.StringUtils;
+import com.tadpole.poem.domain.Poem;
 
 import java.io.IOException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,9 +98,8 @@ public class GrabPageProcessor {
         if (anchors == null) return null;
 
         for (HtmlAnchor anchor : anchors) {
-            if (anchor.getHrefAttribute().startsWith("/view")) {
 
-                System.out.println("Find MATCHED URL " + anchor.getHrefAttribute().toString());
+            if (anchor.getHrefAttribute().startsWith("/view")) {
 
                 DetailResource resource = new DetailResource();
                 resource.setUrl(anchor.getHrefAttribute());
@@ -116,11 +114,64 @@ public class GrabPageProcessor {
         return null;
     }
 
+    public static Poem getPoemContent(Job job, DetailResource detailResource, WebClient webClient) {
+
+        String fullUrl = job.getTarget() + detailResource.getUrl();
+
+        Poem poem = new Poem();
+        try {
+            HtmlPage htmlPage = webClient.getPage(new URL(fullUrl));
+
+            List<HtmlDivision> divisions = (List<HtmlDivision>) htmlPage.getByXPath("//*[contains(concat(\" \", normalize-space(@class), \" \"), \" son2 \")]");
+
+            for (HtmlDivision division : divisions) {
+
+                String text = division.getTextContent();
+                if (text.contains("原文：")) {
+                    int start = text.indexOf("原文：") + "原文：".length();
+
+                    String content = text.substring(start);
+
+                    poem.setContent(content.trim());
+                    poem.setTitle(detailResource.getTitle());
+
+                    List<HtmlAnchor> anchors = (List<HtmlAnchor>) division.getByXPath("//a");
+
+                    for (HtmlAnchor htmlAnchor: anchors) {
+
+                        String href = htmlAnchor.getHrefAttribute();
+
+                        if (href.startsWith("/author_")) {
+                            poem.setAnthorName(htmlAnchor.getTextContent());
+                        }
+                    }
+                }
+
+            }
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        return null;
+    }
+
     public static void main(String[] args) throws Exception {
 
-        Job job = new Job();
-        job.setTarget("http://so.gushiwen.org/type.aspx?p=");
+        DetailResource detailResource = new DetailResource();
+        detailResource.setTitle("Your s");
+        detailResource.setUrl("/view_71422.aspx");
 
-        System.out.print(getPoemDetailUrls(job, newWebClient(), 1));
+        Job job = new Job();
+        job.setTarget("http://so.gushiwen.org");
+        System.err.print(getPoemContent(job, detailResource, newWebClient()));
+
     }
+
+
 }
