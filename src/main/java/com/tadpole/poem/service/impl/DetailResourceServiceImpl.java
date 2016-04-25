@@ -87,7 +87,7 @@ public class DetailResourceServiceImpl implements DetailResourceService {
 
         WebClient webClient = GrabPageProcessor.newWebClient();
 
-        for (int i = 1; i < 4; i++) {
+        for (int i = 1; i < 201; i++) {
 
             JobLog jobLog = new JobLog();
             jobLog.setJob(job);
