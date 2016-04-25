@@ -1,0 +1,38 @@
+{
+    "relationships": [
+        {
+            "relationshipName": "author",
+            "otherEntityName": "author",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "anthorName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "title",
+            "fieldType": "String",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "content",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "10000"
+        },
+        {
+            "fieldName": "year",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20160425031901",
+    "dto": "no",
+    "service": "serviceImpl",
+    "entityTableName": "poem",
+    "pagination": "pagination"
+}

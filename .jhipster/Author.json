@@ -1,0 +1,41 @@
+{
+    "relationships": [
+        {
+            "relationshipName": "poem",
+            "otherEntityName": "poem",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "author"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "birthYear",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dieYear",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "zi",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "hao",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "avatarFileName",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20160425032338",
+    "dto": "no",
+    "service": "serviceImpl",
+    "entityTableName": "author",
+    "pagination": "pagination"
+}

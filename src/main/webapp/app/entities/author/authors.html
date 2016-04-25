@@ -1,0 +1,70 @@
+<div>
+    <h2>Authors</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="author.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span >
+                        Create new Author
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span>Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="birthYear"><span>Birth Year</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="dieYear"><span>Die Year</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="zi"><span>Zi</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="hao"><span>Hao</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="avatarFileName"><span>Avatar File Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="author in vm.authors track by author.id">
+                    <td><a ui-sref="author-detail({id:author.id})">{{author.id}}</a></td>
+                    <td>{{author.name}}</td>
+                    <td>{{author.birthYear}}</td>
+                    <td>{{author.dieYear}}</td>
+                    <td>{{author.zi}}</td>
+                    <td>{{author.hao}}</td>
+                    <td>{{author.avatarFileName}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="author-detail({id:author.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="author.edit({id:author.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="author.delete({id:author.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+    </div>
+</div>
