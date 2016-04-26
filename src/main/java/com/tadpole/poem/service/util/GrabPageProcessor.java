@@ -49,7 +49,8 @@ public class GrabPageProcessor {
         WebClient webClient = new WebClient(BrowserVersion.CHROME);
         webClient.getOptions().setCssEnabled(false);
         webClient.getOptions().setThrowExceptionOnScriptError(false);
-        webClient.getOptions().setTimeout(5000);
+        webClient.getOptions().setTimeout(15000);
+        webClient.getOptions().setJavaScriptEnabled(false);
 
         webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
 

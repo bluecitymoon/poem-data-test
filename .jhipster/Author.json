@@ -35,6 +35,18 @@
         {
             "fieldName": "link",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "5000"
+        },
+        {
+            "fieldName": "visitCount",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20160425032338",

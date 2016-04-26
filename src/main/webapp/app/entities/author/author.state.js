@@ -88,6 +88,9 @@
                                 zi: null,
                                 hao: null,
                                 avatarFileName: null,
+                                link: null,
+                                description: null,
+                                visitCount: null,
                                 id: null
                             };
                         }

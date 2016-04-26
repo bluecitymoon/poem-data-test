@@ -13,4 +13,6 @@ public interface AuthorRepository extends JpaRepository<Author,Long> {
 
     Author findByLink(String link);
 
+    List<Author> findByDescriptionIsNull();
+
 }

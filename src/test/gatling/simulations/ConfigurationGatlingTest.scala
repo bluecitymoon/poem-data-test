@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the Author entity.
+ * Performance test for the Configuration entity.
  */
-class AuthorGatlingTest extends Simulation {
+class ConfigurationGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -48,7 +48,7 @@ class AuthorGatlingTest extends Simulation {
         "Authorization" -> "Bearer ${access_token}"
     )
 
-    val scn = scenario("Test the Author entity")
+    val scn = scenario("Test the Configuration entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -72,26 +72,26 @@ class AuthorGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all authors")
-            .get("/api/authors")
+            exec(http("Get all configurations")
+            .get("/api/configurations")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new author")
-            .post("/api/authors")
+            .exec(http("Create new configuration")
+            .post("/api/configurations")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "birthYear":"SAMPLE_TEXT", "dieYear":"SAMPLE_TEXT", "zi":"SAMPLE_TEXT", "hao":"SAMPLE_TEXT", "avatarFileName":"SAMPLE_TEXT", "link":"SAMPLE_TEXT", "description":"SAMPLE_TEXT", "visitCount":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "identifier":"SAMPLE_TEXT", "content":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_author_url"))).exitHereIfFailed
+            .check(headerRegex("Location", "(.*)").saveAs("new_configuration_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created author")
-                .get("${new_author_url}")
+                exec(http("Get created configuration")
+                .get("${new_configuration_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created author")
-            .delete("${new_author_url}")
+            .exec(http("Delete created configuration")
+            .delete("${new_configuration_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }

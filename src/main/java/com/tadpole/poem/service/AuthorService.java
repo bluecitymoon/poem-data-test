@@ -1,6 +1,8 @@
 package com.tadpole.poem.service;
 
+import com.gargoylesoftware.htmlunit.WebClient;
 import com.tadpole.poem.domain.Author;
+import com.tadpole.poem.domain.Job;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,7 +15,7 @@ public interface AuthorService {
 
     /**
      * Save a author.
-     * 
+     *
      * @param author the entity to save
      * @return the persisted entity
      */
@@ -21,7 +23,7 @@ public interface AuthorService {
 
     /**
      *  Get all the authors.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
@@ -29,7 +31,7 @@ public interface AuthorService {
 
     /**
      *  Get the "id" author.
-     *  
+     *
      *  @param id the id of the entity
      *  @return the entity
      */
@@ -37,8 +39,12 @@ public interface AuthorService {
 
     /**
      *  Delete the "id" author.
-     *  
+     *
      *  @param id the id of the entity
      */
     void delete(Long id);
+
+    boolean fillUpAuthorInformation(Job job);
+
+    Author fillUpSingleAuthor(Author author, WebClient webClient);
 }

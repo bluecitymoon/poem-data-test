@@ -3,6 +3,7 @@ package com.tadpole.poem.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,6 +42,13 @@ public class Author implements Serializable {
 
     @Column(name = "link")
     private String link;
+
+    @Size(max = 5000)
+    @Column(name = "description", length = 5000)
+    private String description;
+
+    @Column(name = "visit_count")
+    private Integer visitCount;
 
     @OneToMany(mappedBy = "author")
     @JsonIgnore
@@ -110,6 +118,22 @@ public class Author implements Serializable {
         this.link = link;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getVisitCount() {
+        return visitCount;
+    }
+
+    public void setVisitCount(Integer visitCount) {
+        this.visitCount = visitCount;
+    }
+
     public Set<Poem> getPoems() {
         return poems;
     }
@@ -149,6 +173,8 @@ public class Author implements Serializable {
             ", hao='" + hao + "'" +
             ", avatarFileName='" + avatarFileName + "'" +
             ", link='" + link + "'" +
+            ", description='" + description + "'" +
+            ", visitCount='" + visitCount + "'" +
             '}';
     }
 }

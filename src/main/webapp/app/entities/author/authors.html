@@ -25,6 +25,9 @@
                     <th jh-sort-by="zi"><span>Zi</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="hao"><span>Hao</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="avatarFileName"><span>Avatar File Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="link"><span>Link</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="description"><span>Description</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="visitCount"><span>Visit Count</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -36,7 +39,10 @@
                     <td>{{author.dieYear}}</td>
                     <td>{{author.zi}}</td>
                     <td>{{author.hao}}</td>
-                    <td>{{author.avatarFileName}}</td>
+                    <td><img src="{{author.avatarFileName}}" style="border-radius: 50%"></td>
+                    <td>{{author.link}}</td>
+                    <td style="width:50%">{{author.description}}</td>
+                    <td>{{author.visitCount}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

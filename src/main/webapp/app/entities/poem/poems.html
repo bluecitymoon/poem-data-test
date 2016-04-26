@@ -35,7 +35,7 @@
                     <td>{{poem.content}}</td>
                     <td>{{poem.year}}</td>
                     <td>
-                        <a ui-sref="author-detail({id:poem.author.id})">{{poem.author.id}}</a>
+                        <a ui-sref="author-detail({id:poem.author.id})"><img src="{{poem.author.avatarFileName}}" style="border-radius: 50%; height: 64px; width: 64px;"></a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
