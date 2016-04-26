@@ -9,6 +9,7 @@ import com.tadpole.poem.domain.DetailResource;
 import com.tadpole.poem.domain.Job;
 import com.tadpole.poem.repository.AuthorRepository;
 import com.tadpole.poem.repository.DetailResourceRepository;
+import com.tadpole.poem.service.AuthorService;
 import com.tadpole.poem.service.PoemService;
 import com.tadpole.poem.domain.Poem;
 import com.tadpole.poem.repository.PoemRepository;
@@ -41,6 +42,9 @@ public class PoemServiceImpl implements PoemService {
 
     @Inject
     private AuthorRepository authorRepository;
+
+    @Inject
+    private AuthorService authorService;
 
     /**
      * Save a poem.
@@ -106,7 +110,8 @@ public class PoemServiceImpl implements PoemService {
         try {
             HtmlPage htmlPage = webClient.getPage(new URL(fullUrl));
 
-            List<HtmlDivision> divisions = (List<HtmlDivision>) htmlPage.getByXPath("//*[contains(concat(\" \", normalize-space(@class), \" \"), \" son2 \")]");
+            String poemContentXpath = "//*[contains(concat(\" \", normalize-space(@class), \" \"), \" son2 \")]";
+            List<HtmlDivision> divisions = (List<HtmlDivision>) htmlPage.getByXPath(poemContentXpath);
 
             for (HtmlDivision division : divisions) {
 
@@ -119,7 +124,7 @@ public class PoemServiceImpl implements PoemService {
                     poem.setContent(content.trim());
                     poem.setTitle(detailResource.getTitle());
 
-                    List<HtmlAnchor> anchors = (List<HtmlAnchor>) division.getByXPath("//a");
+                    List<HtmlAnchor> anchors = (List<HtmlAnchor>) division.getByXPath(poemContentXpath + "//a");
 
                     for (HtmlAnchor htmlAnchor : anchors) {
 
@@ -135,7 +140,7 @@ public class PoemServiceImpl implements PoemService {
                                 newAuthor.setLink(href);
                                 newAuthor.setName(htmlAnchor.getTextContent().trim());
 
-                                Author savedAuthor = authorRepository.save(newAuthor);
+                                Author savedAuthor = authorService.save(newAuthor);
 
                                 poem.setAuthor(savedAuthor);
                             } else {
@@ -150,10 +155,10 @@ public class PoemServiceImpl implements PoemService {
 
         } catch (IOException e) {
 
-            e.printStackTrace();
+           System.out.println(e.getMessage());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
 
         }
 
@@ -167,7 +172,7 @@ public class PoemServiceImpl implements PoemService {
      * @return
      */
     public boolean grabAllPoems(Job job) {
-        List<DetailResource> urls = detailResourceRepository.findAll();
+        List<DetailResource> urls = detailResourceRepository.findByVisitCountIsNull();
 
         WebClient webClient = GrabPageProcessor.newWebClient();
 

@@ -1,0 +1,63 @@
+@font-face {
+    font-family: 'Jerry-Bold';
+    src: url('fonts/Jerry-Bold/jfont-webfont.eot');
+    src: url('fonts/Jerry-Bold/jfont-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/Jerry-Bold/jfont-webfont.woff2') format('woff2'),
+         url('fonts/Jerry-Bold/jfont-webfont.woff') format('woff'),
+         url('fonts/Jerry-Bold/jfont-webfont.ttf') format('truetype'),
+         url('fonts/Jerry-Bold/jfont-webfont.svg#webfontregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Jerry-Normal';
+    src: url('fonts/Jerry-Normal/jfont-normal-webfont.eot');
+    src: url('fonts/Jerry-Normal/jfont-normal-webfont.eot?#iefix') format('embedded-opentype'),
+    url('fonts/Jerry-Normal/jfont-normal-webfont.woff2') format('woff2'),
+    url('fonts/Jerry-Normal/jfont-normal-webfont.woff') format('woff'),
+    url('fonts/Jerry-Normal/jfont-normal-webfont.ttf') format('truetype'),
+    url('fonts/Jerry-Normal/jfont-normal-webfont.svg#webfontregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Jerry-Shouxie';
+    src: url('fonts/Jerry-Shouxie/ctb_c_datc5-webfont.eot');
+    src: url('fonts/Jerry-Shouxie/ctb_c_datc5-webfont.eot?#iefix') format('embedded-opentype'),
+    url('fonts/Jerry-Shouxie/ctb_c_datc5-webfont.woff2') format('woff2'),
+    url('fonts/Jerry-Shouxie/ctb_c_datc5-webfont.woff') format('woff'),
+    url('fonts/Jerry-Shouxie/ctb_c_datc5-webfont.ttf') format('truetype'),
+    url('fonts/Jerry-Shouxie/ctb_c_datc5-webfont.svg#follforegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Jerry-Yuezi';
+    src: url('fonts/Jerry-Yuezi/1.0-webfont.eot');
+    src: url('fonts/Jerry-Yuezi/1.0-webfont.eot?#iefix') format('embedded-opentype'),
+    url('fonts/Jerry-Yuezi/1.0-webfont.woff2') format('woff2'),
+    url('fonts/Jerry-Yuezi/1.0-webfont.woff') format('woff'),
+    url('fonts/Jerry-Yuezi/1.0-webfont.ttf') format('truetype'),
+    url('fonts/Jerry-Yuezi/1.0-webfont.svg#ruixiansunheiboldgb1.0regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Jerry-Fangzheng';
+    src: url('fonts/Jerry-FangzhengBangshuXing/fangzhengbangshuxing-webfont.eot');
+    src: url('fonts/Jerry-FangzhengBangshuXing/fangzhengbangshuxing-webfont.eot?#iefix') format('embedded-opentype'),
+    url('fonts/Jerry-FangzhengBangshuXing/fangzhengbangshuxing-webfont.woff2') format('woff2'),
+    url('fonts/Jerry-FangzhengBangshuXing/fangzhengbangshuxing-webfont.woff') format('woff'),
+    url('fonts/Jerry-FangzhengBangshuXing/fangzhengbangshuxing-webfont.ttf') format('truetype'),
+    url('fonts/Jerry-FangzhengBangshuXing/fangzhengbangshuxing-webfont.svg#fzbangshuxings-r-gbregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}

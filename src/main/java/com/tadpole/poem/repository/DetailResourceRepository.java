@@ -11,4 +11,6 @@ import java.util.List;
  */
 public interface DetailResourceRepository extends JpaRepository<DetailResource,Long> {
 
+    List<DetailResource> findByVisitCountIsNull();
+
 }

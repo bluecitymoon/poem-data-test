@@ -23,7 +23,7 @@
             "fieldValidateRules": [
                 "maxlength"
             ],
-            "fieldValidateRulesMaxlength": "10000"
+            "fieldValidateRulesMaxlength": "20000"
         },
         {
             "fieldName": "year",

@@ -25,8 +25,8 @@ public class Poem implements Serializable {
     @Column(name = "title")
     private String title;
 
-    @Size(max = 10000)
-    @Column(name = "content", length = 10000)
+    @Size(max = 20000)
+    @Column(name = "content", length = 20000)
     private String content;
 
     @Column(name = "year")
