@@ -30,10 +30,10 @@ import java.util.Optional;
 public class PoemResource {
 
     private final Logger log = LoggerFactory.getLogger(PoemResource.class);
-        
+
     @Inject
     private PoemService poemService;
-    
+
     /**
      * POST  /poems : Create a new poem.
      *
@@ -94,7 +94,7 @@ public class PoemResource {
     public ResponseEntity<List<Poem>> getAllPoems(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Poems");
-        Page<Poem> page = poemService.findAll(pageable); 
+        Page<Poem> page = poemService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/poems");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

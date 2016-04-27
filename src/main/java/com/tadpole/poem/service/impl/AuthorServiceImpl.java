@@ -9,7 +9,9 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.tadpole.poem.domain.Configuration;
 import com.tadpole.poem.domain.Job;
+import com.tadpole.poem.domain.Poem;
 import com.tadpole.poem.repository.ConfigurationRepository;
+import com.tadpole.poem.repository.PoemRepository;
 import com.tadpole.poem.service.AuthorService;
 import com.tadpole.poem.domain.Author;
 import com.tadpole.poem.repository.AuthorRepository;
@@ -17,6 +19,7 @@ import com.tadpole.poem.service.util.GrabPageProcessor;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.cloudfoundry.com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +46,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Inject
     private ConfigurationRepository configurationRepository;
+
+    @Inject
+    private PoemRepository poemRepository;
 
 
     /**
@@ -247,6 +253,23 @@ public class AuthorServiceImpl implements AuthorService {
             }
 
             save(author);
+        }
+    }
+
+    @Override
+    public void objectsToJsonFiles(Job job) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Poem> poems = poemRepository.findAll();
+//        for (Poem poem: poems) {
+//            poem.getAuthor();
+//        }
+
+        String stringFilesPath = configurationRepository.findByIdentifier("JSON_FILE_PATH").getContent();
+        try {
+            objectMapper.writeValue(new File(stringFilesPath + "Poems.json"), poems);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

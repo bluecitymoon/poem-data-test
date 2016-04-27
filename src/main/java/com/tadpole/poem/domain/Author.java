@@ -53,9 +53,9 @@ public class Author implements Serializable {
     @Column(name = "reference_avatar")
     private String referenceAvatar;
 
-    @OneToMany(mappedBy = "author")
-    @JsonIgnore
-    private Set<Poem> poems = new HashSet<>();
+//    @OneToMany(mappedBy = "author")
+//    @JsonIgnore
+//    private Set<Poem> poems = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -145,13 +145,13 @@ public class Author implements Serializable {
         this.referenceAvatar = referenceAvatar;
     }
 
-    public Set<Poem> getPoems() {
-        return poems;
-    }
-
-    public void setPoems(Set<Poem> poems) {
-        this.poems = poems;
-    }
+//    public Set<Poem> getPoems() {
+//        return poems;
+//    }
+//
+//    public void setPoems(Set<Poem> poems) {
+//        this.poems = poems;
+//    }
 
     @Override
     public boolean equals(Object o) {
