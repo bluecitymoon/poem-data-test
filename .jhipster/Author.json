@@ -47,6 +47,10 @@
         {
             "fieldName": "visitCount",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "referenceAvatar",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20160425032338",

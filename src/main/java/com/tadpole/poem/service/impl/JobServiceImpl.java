@@ -9,6 +9,7 @@ import com.tadpole.poem.service.JobService;
 import com.tadpole.poem.domain.Job;
 import com.tadpole.poem.repository.JobRepository;
 import com.tadpole.poem.service.PoemService;
+import com.tadpole.poem.service.util.GrabPageProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -121,6 +122,14 @@ public class JobServiceImpl implements JobService {
             case "AUTHOR-FILL-UP":
 
                 authorService.fillUpAuthorInformation(job);
+
+                job.setLastStop(ZonedDateTime.now());
+
+                jobRepository.save(job);
+                break;
+            case "DOWNLOAD-AUTHOR-AVATAR":
+
+                authorService.downloadAvatars(job, GrabPageProcessor.newWebClient());
 
                 job.setLastStop(ZonedDateTime.now());
 

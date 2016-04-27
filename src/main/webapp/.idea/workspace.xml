@@ -97,8 +97,8 @@
       <file leaf-file-name="poems.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/entities/poem/poems.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5912162">
-              <caret line="39" column="43" selection-start-line="39" selection-start-column="43" selection-end-line="39" selection-end-column="43" />
+            <state vertical-scroll-proportion="0.9459459">
+              <caret line="60" column="25" selection-start-line="60" selection-start-column="25" selection-end-line="60" selection-end-column="25" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#a#0;n#td#5;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#div#0;n#!!top" expanded="true" />
               </folding>
@@ -275,6 +275,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="SearchEverywhereHistoryKey" value="poems&#9;FILE&#9;file:///Users/jerryjiang/Documents/workspace/poem-data-test/src/main/webapp/app/entities/poem/poems.html&#10;au&#9;FILE&#9;file:///Users/jerryjiang/Documents/workspace/poem-data-test/src/main/webapp/app/entities/author/authors.html&#10;authors&#9;FILE&#9;file:///Users/jerryjiang/Documents/workspace/poem-data-test/src/main/webapp/app/entities/author/authors.html&#10;angular.js&#9;FILE&#9;file:///Users/jerryjiang/Documents/workspace/poem-data-test/src/main/webapp/bower_components/angular/angular.js" />
+    <property name="FullScreen" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -337,7 +338,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="25" y="32" width="1920" height="1009" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -528,8 +529,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/entities/poem/poems.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5912162">
-          <caret line="39" column="43" selection-start-line="39" selection-start-column="43" selection-end-line="39" selection-end-column="43" />
+        <state vertical-scroll-proportion="0.9459459">
+          <caret line="60" column="25" selection-start-line="60" selection-start-column="25" selection-end-line="60" selection-end-column="25" />
           <folding>
             <element signature="n#style#0;n#img#0;n#a#0;n#td#5;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#div#0;n#!!top" expanded="true" />
           </folding>

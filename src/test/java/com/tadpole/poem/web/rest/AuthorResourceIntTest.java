@@ -61,6 +61,8 @@ public class AuthorResourceIntTest {
 
     private static final Integer DEFAULT_VISIT_COUNT = 1;
     private static final Integer UPDATED_VISIT_COUNT = 2;
+    private static final String DEFAULT_REFERENCE_AVATAR = "AAAAA";
+    private static final String UPDATED_REFERENCE_AVATAR = "BBBBB";
 
     @Inject
     private AuthorRepository authorRepository;
@@ -100,6 +102,7 @@ public class AuthorResourceIntTest {
         author.setLink(DEFAULT_LINK);
         author.setDescription(DEFAULT_DESCRIPTION);
         author.setVisitCount(DEFAULT_VISIT_COUNT);
+        author.setReferenceAvatar(DEFAULT_REFERENCE_AVATAR);
     }
 
     @Test
@@ -127,6 +130,7 @@ public class AuthorResourceIntTest {
         assertThat(testAuthor.getLink()).isEqualTo(DEFAULT_LINK);
         assertThat(testAuthor.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testAuthor.getVisitCount()).isEqualTo(DEFAULT_VISIT_COUNT);
+        assertThat(testAuthor.getReferenceAvatar()).isEqualTo(DEFAULT_REFERENCE_AVATAR);
     }
 
     @Test
@@ -148,7 +152,8 @@ public class AuthorResourceIntTest {
                 .andExpect(jsonPath("$.[*].avatarFileName").value(hasItem(DEFAULT_AVATAR_FILE_NAME.toString())))
                 .andExpect(jsonPath("$.[*].link").value(hasItem(DEFAULT_LINK.toString())))
                 .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-                .andExpect(jsonPath("$.[*].visitCount").value(hasItem(DEFAULT_VISIT_COUNT)));
+                .andExpect(jsonPath("$.[*].visitCount").value(hasItem(DEFAULT_VISIT_COUNT)))
+                .andExpect(jsonPath("$.[*].referenceAvatar").value(hasItem(DEFAULT_REFERENCE_AVATAR.toString())));
     }
 
     @Test
@@ -170,7 +175,8 @@ public class AuthorResourceIntTest {
             .andExpect(jsonPath("$.avatarFileName").value(DEFAULT_AVATAR_FILE_NAME.toString()))
             .andExpect(jsonPath("$.link").value(DEFAULT_LINK.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.visitCount").value(DEFAULT_VISIT_COUNT));
+            .andExpect(jsonPath("$.visitCount").value(DEFAULT_VISIT_COUNT))
+            .andExpect(jsonPath("$.referenceAvatar").value(DEFAULT_REFERENCE_AVATAR.toString()));
     }
 
     @Test
@@ -201,6 +207,7 @@ public class AuthorResourceIntTest {
         updatedAuthor.setLink(UPDATED_LINK);
         updatedAuthor.setDescription(UPDATED_DESCRIPTION);
         updatedAuthor.setVisitCount(UPDATED_VISIT_COUNT);
+        updatedAuthor.setReferenceAvatar(UPDATED_REFERENCE_AVATAR);
 
         restAuthorMockMvc.perform(put("/api/authors")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -220,6 +227,7 @@ public class AuthorResourceIntTest {
         assertThat(testAuthor.getLink()).isEqualTo(UPDATED_LINK);
         assertThat(testAuthor.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testAuthor.getVisitCount()).isEqualTo(UPDATED_VISIT_COUNT);
+        assertThat(testAuthor.getReferenceAvatar()).isEqualTo(UPDATED_REFERENCE_AVATAR);
     }
 
     @Test

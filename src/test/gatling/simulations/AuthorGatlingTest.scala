@@ -80,7 +80,7 @@ class AuthorGatlingTest extends Simulation {
             .exec(http("Create new author")
             .post("/api/authors")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "birthYear":"SAMPLE_TEXT", "dieYear":"SAMPLE_TEXT", "zi":"SAMPLE_TEXT", "hao":"SAMPLE_TEXT", "avatarFileName":"SAMPLE_TEXT", "link":"SAMPLE_TEXT", "description":"SAMPLE_TEXT", "visitCount":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "birthYear":"SAMPLE_TEXT", "dieYear":"SAMPLE_TEXT", "zi":"SAMPLE_TEXT", "hao":"SAMPLE_TEXT", "avatarFileName":"SAMPLE_TEXT", "link":"SAMPLE_TEXT", "description":"SAMPLE_TEXT", "visitCount":"0", "referenceAvatar":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_author_url"))).exitHereIfFailed
             .pause(10)

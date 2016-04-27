@@ -5,6 +5,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlImage;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlParagraph;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import com.tadpole.poem.domain.Configuration;
 import com.tadpole.poem.domain.Job;
 import com.tadpole.poem.repository.ConfigurationRepository;
@@ -12,6 +14,7 @@ import com.tadpole.poem.service.AuthorService;
 import com.tadpole.poem.domain.Author;
 import com.tadpole.poem.repository.AuthorRepository;
 import com.tadpole.poem.service.util.GrabPageProcessor;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,9 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -91,7 +96,15 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public boolean fillUpAuthorInformation(Job job) {
 
-        List<Author> authors = authorRepository.findByDescriptionIsNull();
+        List<Author> authors = Lists.newArrayList();
+
+        String authorForceRegrab = configurationRepository.findByIdentifier("AUTHOR-FORCE-REGRAB").getContent();
+
+        if (StringUtils.isNotEmpty(authorForceRegrab) && authorForceRegrab.equals("1")) {
+            authors = authorRepository.findAll();
+        } else {
+            authors = authorRepository.findByDescriptionIsNull();
+        }
 
         WebClient webClient = GrabPageProcessor.newWebClient();
 
@@ -152,7 +165,23 @@ public class AuthorServiceImpl implements AuthorService {
         List<HtmlImage> images = (List<HtmlImage>) htmlPage.getByXPath(authorDescriptionXpath + "//img");
 
         if (images != null && !images.isEmpty()) {
-            author.setAvatarFileName(images.get(0).getSrcAttribute());
+
+            HtmlImage image = images.get(0);
+            String src = image.getSrcAttribute();
+            List<String> patheElements = Splitter.on("/").splitToList(src);
+
+            String fileName = patheElements.get(patheElements.size() - 1);
+
+            String realFileName = System.currentTimeMillis() + "-" + fileName;
+            String fullFilePath = configurationRepository.findByIdentifier("AUTHOR-AVATAR-BATH").getContent() + realFileName;
+
+            try {
+                image.saveAs(new File(fullFilePath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            author.setAvatarFileName(realFileName);
+            author.setReferenceAvatar(src);
         }
 
         Integer visitCount = author.getVisitCount();
@@ -165,5 +194,59 @@ public class AuthorServiceImpl implements AuthorService {
         Author updatedAuthor = save(author);
 
         return updatedAuthor;
+    }
+
+    @Override
+    public void downloadAvatars(Job job, WebClient webClient) {
+
+        for (Author author: authorRepository.findAll()) {
+
+            String fullUrl = configurationRepository.findByIdentifier("SEARCH_BASE").getContent() + author.getLink();
+
+            HtmlPage htmlPage = null;
+            try {
+
+                System.err.println(fullUrl);
+
+                htmlPage = webClient.getPage(new URL(fullUrl));
+
+            } catch (Exception e) {
+
+                System.err.println(e.getMessage());
+
+            }
+
+            String authorDescriptionXpath = "//*[contains(concat(\" \", normalize-space(@class), \" \"), \" son2 \")]";
+
+            List<HtmlImage> images = (List<HtmlImage>) htmlPage.getByXPath(authorDescriptionXpath + "//img");
+
+            if (images != null && !images.isEmpty()) {
+
+                HtmlImage image = images.get(0);
+                String src = image.getSrcAttribute();
+                List<String> patheElements = Splitter.on("/").splitToList(src);
+
+                String fileName = patheElements.get(patheElements.size() - 1);
+
+                String realFileName = System.currentTimeMillis() + "-" + fileName;
+                String fullFilePath = configurationRepository.findByIdentifier("AUTHOR-AVATAR-BATH").getContent() + realFileName;
+
+                try {
+                    image.saveAs(new File(fullFilePath));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                author.setAvatarFileName(realFileName);
+            }
+
+            Integer visitCount = author.getVisitCount();
+            if (visitCount == null) {
+                author.setVisitCount(1);
+            } else {
+                author.setVisitCount(visitCount + 1);
+            }
+
+            save(author);
+        }
     }
 }

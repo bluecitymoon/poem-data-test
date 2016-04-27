@@ -47,4 +47,6 @@ public interface AuthorService {
     boolean fillUpAuthorInformation(Job job);
 
     Author fillUpSingleAuthor(Author author, WebClient webClient);
+
+    void downloadAvatars(Job job, WebClient webclient);
 }

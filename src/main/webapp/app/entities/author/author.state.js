@@ -91,6 +91,7 @@
                                 link: null,
                                 description: null,
                                 visitCount: null,
+                                referenceAvatar: null,
                                 id: null
                             };
                         }
