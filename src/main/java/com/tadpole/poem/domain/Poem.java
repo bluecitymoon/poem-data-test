@@ -32,6 +32,9 @@ public class Poem implements Serializable {
     @Column(name = "year")
     private String year;
 
+    @Transient
+    private String titlePinyin;
+
     @ManyToOne
     private Author author;
 
@@ -81,6 +84,14 @@ public class Poem implements Serializable {
 
     public void setAuthor(Author author) {
         this.author = author;
+    }
+
+    public String getTitlePinyin() {
+        return titlePinyin;
+    }
+
+    public void setTitlePinyin(String titlePinyin) {
+        this.titlePinyin = titlePinyin;
     }
 
     @Override

@@ -16,6 +16,7 @@ import com.tadpole.poem.service.AuthorService;
 import com.tadpole.poem.domain.Author;
 import com.tadpole.poem.repository.AuthorRepository;
 import com.tadpole.poem.service.util.GrabPageProcessor;
+import com.tadpole.poem.service.util.PinyinTranslator;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -205,7 +206,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void downloadAvatars(Job job, WebClient webClient) {
 
-        for (Author author: authorRepository.findAll()) {
+        for (Author author : authorRepository.findAll()) {
 
             String fullUrl = configurationRepository.findByIdentifier("SEARCH_BASE").getContent() + author.getLink();
 
@@ -261,9 +262,31 @@ public class AuthorServiceImpl implements AuthorService {
 
         ObjectMapper objectMapper = new ObjectMapper();
         List<Poem> poems = poemRepository.findAll();
-//        for (Poem poem: poems) {
-//            poem.getAuthor();
-//        }
+        for (Poem poem : poems) {
+
+            try {
+
+                poem.setContent(PinyinTranslator.removeGuahaoThingsInString(poem.getContent()).replaceAll("\\t|\\r|\\n|\\s+", ""));
+                poem.setTitlePinyin(PinyinTranslator.getFullSpell(poem.getTitle()));
+
+                if (poem.getAuthor() != null) {
+
+                    poem.getAuthor().setReferenceAvatar("");
+                    poem.getAuthor().setLink("");
+
+                    if (poem.getAuthor().getDescription() != null) {
+                        poem.getAuthor().setDescription(poem.getAuthor().getDescription().replaceAll("\\t", ""));
+                    }
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
 
         String stringFilesPath = configurationRepository.findByIdentifier("JSON_FILE_PATH").getContent();
         try {
