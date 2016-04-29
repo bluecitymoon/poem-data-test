@@ -44,4 +44,6 @@ public interface DetailResourceService {
     void delete(Long id);
 
     boolean grabAllDetailLinks(Job job);
+
+    void grabDetailLinksInTypes(Job job);
 }

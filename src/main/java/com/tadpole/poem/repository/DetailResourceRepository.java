@@ -13,4 +13,6 @@ public interface DetailResourceRepository extends JpaRepository<DetailResource,L
 
     List<DetailResource> findByVisitCountIsNull();
 
+    DetailResource findByUrl(String url);
+
 }

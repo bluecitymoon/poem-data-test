@@ -3,12 +3,9 @@ package com.tadpole.poem.service.impl;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.tadpole.poem.service.AuthorService;
-import com.tadpole.poem.service.DetailResourceService;
-import com.tadpole.poem.service.JobService;
+import com.tadpole.poem.service.*;
 import com.tadpole.poem.domain.Job;
 import com.tadpole.poem.repository.JobRepository;
-import com.tadpole.poem.service.PoemService;
 import com.tadpole.poem.service.util.GrabPageProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +41,9 @@ public class JobServiceImpl implements JobService {
 
     @Inject
     private AuthorService authorService;
+
+    @Inject
+    private TagService tagService;
 
     /**
      * Save a job.
@@ -145,6 +145,21 @@ public class JobServiceImpl implements JobService {
                 jobRepository.save(job);
 
                 break;
+
+            case "TAGS":
+                tagService.grabAllTags(job, GrabPageProcessor.newWebClient());
+
+                job.setLastStop(ZonedDateTime.now());
+
+                jobRepository.save(job);
+
+                break;
+            case "Poem-detail-in-tags":
+
+                detailResourceService.grabDetailLinksInTypes(job);
+                job.setLastStop(ZonedDateTime.now());
+
+                jobRepository.save(job);
             default:
                 break;
         }

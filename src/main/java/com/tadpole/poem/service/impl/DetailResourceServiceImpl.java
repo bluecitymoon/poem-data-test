@@ -3,7 +3,9 @@ package com.tadpole.poem.service.impl;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.tadpole.poem.domain.Job;
 import com.tadpole.poem.domain.JobLog;
+import com.tadpole.poem.domain.Tag;
 import com.tadpole.poem.repository.JobLogRepository;
+import com.tadpole.poem.repository.TagRepository;
 import com.tadpole.poem.service.DetailResourceService;
 import com.tadpole.poem.domain.DetailResource;
 import com.tadpole.poem.repository.DetailResourceRepository;
@@ -23,7 +25,6 @@ import java.util.List;
  * Service Implementation for managing DetailResource.
  */
 @Service
-@Transactional
 public class DetailResourceServiceImpl implements DetailResourceService {
 
     private final Logger log = LoggerFactory.getLogger(DetailResourceServiceImpl.class);
@@ -33,6 +34,9 @@ public class DetailResourceServiceImpl implements DetailResourceService {
 
     @Inject
     private JobLogRepository jobLogRepository;
+
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Save a detailResource.
@@ -93,7 +97,7 @@ public class DetailResourceServiceImpl implements DetailResourceService {
             jobLog.setJob(job);
             jobLog.setStart(ZonedDateTime.now());
 
-            List<DetailResource> page = GrabPageProcessor.getPoemDetailUrls(job, webClient, i);
+            List<DetailResource> page = GrabPageProcessor.getPoemDetailUrls(job, webClient, i, null);
 
             detailResourceRepository.save(page);
 
@@ -105,5 +109,49 @@ public class DetailResourceServiceImpl implements DetailResourceService {
             jobLogRepository.save(jobLog);
         }
         return false;
+    }
+
+    @Override
+    public void grabDetailLinksInTypes(Job job) {
+        WebClient webClient = GrabPageProcessor.newWebClient();
+        List<Tag> tags = tagRepository.findAll();
+
+        for (Tag tag : tags) {
+            System.err.println("Visiting tag " + tag.getIdentifier());
+            int i = 1;
+            for (; ; ) {
+                List<DetailResource> page = GrabPageProcessor.getPoemDetailUrls(job, webClient, i, tag.getIdentifier());
+
+                if (page == null) break;
+
+                saveDetailResource(page, job);
+
+                i++;
+            }
+        }
+    }
+
+    private void saveDetailResource(List<DetailResource> page, Job job) {
+
+        for (DetailResource detailResource : page) {
+
+            DetailResource resource = detailResourceRepository.findByUrl(detailResource.getUrl());
+            if (resource == null) {
+                DetailResource detail = detailResourceRepository.save(detailResource);
+
+                JobLog log = new JobLog();
+                log.setMessage(detail.toString() + " saved with job " + job.getName());
+                log.setEnd(ZonedDateTime.now());
+
+                jobLogRepository.save(log);
+            } else {
+
+                JobLog log = new JobLog();
+                log.setMessage("Skip to save resource " + resource.getTitle() + " reason: existed.");
+                log.setEnd(ZonedDateTime.now());
+
+                jobLogRepository.save(log);
+            }
+        }
     }
 }

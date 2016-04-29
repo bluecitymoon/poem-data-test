@@ -10,9 +10,12 @@ import com.tadpole.poem.domain.Author;
 import com.tadpole.poem.domain.DetailResource;
 import com.tadpole.poem.domain.Job;
 import com.tadpole.poem.domain.Poem;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,19 +60,33 @@ public class GrabPageProcessor {
         return webClient;
     }
 
-    public static List<DetailResource> getPoemDetailUrls(Job job, WebClient webClient, int pageNumber) {
+    public static List<DetailResource> getPoemDetailUrls(Job job, WebClient webClient, int pageNumber, String type) {
 
         String baseUrl = job.getTarget();
 
         List<DetailResource> page = new ArrayList<>(10);
 
         String fullUrl = baseUrl + pageNumber;
+        if (StringUtils.isNotEmpty(type)) {
+            try {
+                fullUrl += ("&t=" + URLEncoder.encode(type, "UTF-8"));
+
+                System.err.println("Visiting " + fullUrl);
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
 
         try {
+
             HtmlPage htmlPage = webClient.getPage(new URL(fullUrl));
 
             List<HtmlDivision> divisions = (List<HtmlDivision>) htmlPage.getByXPath("//*[contains(concat(\" \", normalize-space(@class), \" \"), \" sons \")]");
 
+            if (divisions == null || divisions.isEmpty()) {
+                return null;
+            }
             for (HtmlDivision division : divisions) {
 
                 List<HtmlAnchor> anchors = division.getHtmlElementsByTagName("a");
@@ -138,7 +155,7 @@ public class GrabPageProcessor {
 
                     List<HtmlAnchor> anchors = (List<HtmlAnchor>) division.getByXPath("//a");
 
-                    for (HtmlAnchor htmlAnchor: anchors) {
+                    for (HtmlAnchor htmlAnchor : anchors) {
 
                         String href = htmlAnchor.getHrefAttribute();
 
