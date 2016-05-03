@@ -14,6 +14,10 @@ import com.tadpole.poem.service.PoemService;
 import com.tadpole.poem.domain.Poem;
 import com.tadpole.poem.repository.PoemRepository;
 import com.tadpole.poem.service.util.GrabPageProcessor;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -110,6 +114,32 @@ public class PoemServiceImpl implements PoemService {
         try {
             HtmlPage htmlPage = webClient.getPage(new URL(fullUrl));
 
+
+            Document document = Jsoup.parse(htmlPage.getWebResponse().getContentAsString());
+            Element element = document.getElementsByClass("son2").last();
+
+            Elements elements = element.getElementsByTag("p");
+            Element[] objects = (Element[]) elements.toArray();
+
+            String periodElement = objects[0].text().substring("朝代：".length());
+            Elements authorElements = objects[1].children();
+            Element authorElement = null;
+            String authorName = "";
+            if (authorElements.size() == 2) {
+                authorElement = authorElements.last();
+                authorName = authorElement.text();
+
+            } else {
+                authorName = objects[1].text().substring("作者".length());
+            }
+            Element contentElement = null;
+
+            if (objects.length > 3) {
+                contentElement = elements.last();
+            }
+
+
+
             String poemContentXpath = "//*[contains(concat(\" \", normalize-space(@class), \" \"), \" son2 \")]";
             List<HtmlDivision> divisions = (List<HtmlDivision>) htmlPage.getByXPath(poemContentXpath);
 
@@ -155,7 +185,7 @@ public class PoemServiceImpl implements PoemService {
 
         } catch (IOException e) {
 
-           System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
