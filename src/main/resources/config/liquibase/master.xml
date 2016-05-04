@@ -12,6 +12,8 @@
     <include file="classpath:config/liquibase/changelog/20160425032338_added_entity_Author.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160426071540_added_entity_Configuration.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160429025145_added_entity_Tag.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160504030427_added_entity_PoemTranslation.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160504030655_added_entity_Story.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20160422014016_added_entity_constraints_JobLog.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160425031901_added_entity_constraints_Poem.xml" relativeToChangelogFile="false"/>

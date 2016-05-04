@@ -9,17 +9,17 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-        .state('poem', {
+        .state('poem-translation', {
             parent: 'entity',
-            url: '/poem?page&sort&search',
+            url: '/poem-translation?page&sort&search',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'Poems'
+                pageTitle: 'PoemTranslations'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/poem/poems.html',
-                    controller: 'PoemController',
+                    templateUrl: 'app/entities/poem-translation/poem-translations.html',
+                    controller: 'PoemTranslationController',
                     controllerAs: 'vm'
                 }
             },
@@ -46,103 +46,99 @@
                 }],
             }
         })
-        .state('poem-detail', {
+        .state('poem-translation-detail', {
             parent: 'entity',
-            url: '/poem/{id}',
+            url: '/poem-translation/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'Poem'
+                pageTitle: 'PoemTranslation'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/poem/poem-detail.html',
-                    controller: 'PoemDetailController',
+                    templateUrl: 'app/entities/poem-translation/poem-translation-detail.html',
+                    controller: 'PoemTranslationDetailController',
                     controllerAs: 'vm'
                 }
             },
             resolve: {
-                entity: ['$stateParams', 'Poem', function($stateParams, Poem) {
-                    return Poem.get({id : $stateParams.id});
+                entity: ['$stateParams', 'PoemTranslation', function($stateParams, PoemTranslation) {
+                    return PoemTranslation.get({id : $stateParams.id});
                 }]
             }
         })
-        .state('poem.new', {
-            parent: 'poem',
+        .state('poem-translation.new', {
+            parent: 'poem-translation',
             url: '/new',
             data: {
                 authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/poem/poem-dialog.html',
-                    controller: 'PoemDialogController',
+                    templateUrl: 'app/entities/poem-translation/poem-translation-dialog.html',
+                    controller: 'PoemTranslationDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
                         entity: function () {
                             return {
-                                anthorName: null,
-                                title: null,
-                                content: null,
-                                year: null,
-                                period: null,
-                                tag: null,
+                                translation: null,
+                                poemId: null,
                                 id: null
                             };
                         }
                     }
                 }).result.then(function() {
-                    $state.go('poem', null, { reload: true });
+                    $state.go('poem-translation', null, { reload: true });
                 }, function() {
-                    $state.go('poem');
+                    $state.go('poem-translation');
                 });
             }]
         })
-        .state('poem.edit', {
-            parent: 'poem',
+        .state('poem-translation.edit', {
+            parent: 'poem-translation',
             url: '/{id}/edit',
             data: {
                 authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/poem/poem-dialog.html',
-                    controller: 'PoemDialogController',
+                    templateUrl: 'app/entities/poem-translation/poem-translation-dialog.html',
+                    controller: 'PoemTranslationDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['Poem', function(Poem) {
-                            return Poem.get({id : $stateParams.id});
+                        entity: ['PoemTranslation', function(PoemTranslation) {
+                            return PoemTranslation.get({id : $stateParams.id});
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('poem', null, { reload: true });
+                    $state.go('poem-translation', null, { reload: true });
                 }, function() {
                     $state.go('^');
                 });
             }]
         })
-        .state('poem.delete', {
-            parent: 'poem',
+        .state('poem-translation.delete', {
+            parent: 'poem-translation',
             url: '/{id}/delete',
             data: {
                 authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/poem/poem-delete-dialog.html',
-                    controller: 'PoemDeleteController',
+                    templateUrl: 'app/entities/poem-translation/poem-translation-delete-dialog.html',
+                    controller: 'PoemTranslationDeleteController',
                     controllerAs: 'vm',
                     size: 'md',
                     resolve: {
-                        entity: ['Poem', function(Poem) {
-                            return Poem.get({id : $stateParams.id});
+                        entity: ['PoemTranslation', function(PoemTranslation) {
+                            return PoemTranslation.get({id : $stateParams.id});
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('poem', null, { reload: true });
+                    $state.go('poem-translation', null, { reload: true });
                 }, function() {
                     $state.go('^');
                 });

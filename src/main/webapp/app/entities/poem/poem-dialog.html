@@ -29,11 +29,11 @@
             <label class="control-label" for="field_content">Content</label>
             <input type="text" class="form-control" name="content" id="field_content"
                     ng-model="vm.poem.content"
-                    ng-maxlength="10000" />
+                    ng-maxlength="20000" />
             <div ng-show="editForm.content.$invalid">
                 <p class="help-block"
                     ng-show="editForm.content.$error.maxlength">
-                    This field cannot be longer than 10000 characters.
+                    This field cannot be longer than 20000 characters.
                 </p>
             </div>
         </div>
@@ -41,6 +41,18 @@
             <label class="control-label" for="field_year">Year</label>
             <input type="text" class="form-control" name="year" id="field_year"
                     ng-model="vm.poem.year"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_period">Period</label>
+            <input type="text" class="form-control" name="period" id="field_period"
+                    ng-model="vm.poem.period"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_tag">Tag</label>
+            <input type="text" class="form-control" name="tag" id="field_tag"
+                    ng-model="vm.poem.tag"
                      />
         </div>
 

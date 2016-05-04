@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the Poem entity.
+ * Performance test for the PoemTranslation entity.
  */
-class PoemGatlingTest extends Simulation {
+class PoemTranslationGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -48,7 +48,7 @@ class PoemGatlingTest extends Simulation {
         "Authorization" -> "Bearer ${access_token}"
     )
 
-    val scn = scenario("Test the Poem entity")
+    val scn = scenario("Test the PoemTranslation entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -72,26 +72,26 @@ class PoemGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all poems")
-            .get("/api/poems")
+            exec(http("Get all poemTranslations")
+            .get("/api/poem-translations")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new poem")
-            .post("/api/poems")
+            .exec(http("Create new poemTranslation")
+            .post("/api/poem-translations")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "anthorName":"SAMPLE_TEXT", "title":"SAMPLE_TEXT", "content":"SAMPLE_TEXT", "year":"SAMPLE_TEXT", "period":"SAMPLE_TEXT", "tag":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "translation":"SAMPLE_TEXT", "poemId":null}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_poem_url"))).exitHereIfFailed
+            .check(headerRegex("Location", "(.*)").saveAs("new_poemTranslation_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created poem")
-                .get("${new_poem_url}")
+                exec(http("Get created poemTranslation")
+                .get("${new_poemTranslation_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created poem")
-            .delete("${new_poem_url}")
+            .exec(http("Delete created poemTranslation")
+            .delete("${new_poemTranslation_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }

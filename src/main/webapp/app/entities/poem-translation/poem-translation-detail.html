@@ -1,0 +1,23 @@
+
+<div>
+    <h2><span>Poem Translation</span> {{vm.poemTranslation.id}}</h2>
+    <hr>
+    <dl class="dl-horizontal">
+        <dt><span>Translation</span></dt>
+        <dd>
+            <span>{{vm.poemTranslation.translation}}</span>
+        </dd>
+        <hr>
+        <dt><span>Poem Id</span></dt>
+        <dd>
+            <span>{{vm.poemTranslation.poemId}}</span>
+        </dd>
+        <hr>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+</div>

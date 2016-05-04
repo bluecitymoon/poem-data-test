@@ -1,0 +1,22 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "translation",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "20000"
+        },
+        {
+            "fieldName": "poemId",
+            "fieldType": "Long"
+        }
+    ],
+    "changelogDate": "20160504030427",
+    "dto": "no",
+    "service": "serviceImpl",
+    "entityTableName": "poem_translation",
+    "pagination": "pagination"
+}

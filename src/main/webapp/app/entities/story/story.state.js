@@ -9,17 +9,17 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-        .state('poem', {
+        .state('story', {
             parent: 'entity',
-            url: '/poem?page&sort&search',
+            url: '/story?page&sort&search',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'Poems'
+                pageTitle: 'Stories'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/poem/poems.html',
-                    controller: 'PoemController',
+                    templateUrl: 'app/entities/story/stories.html',
+                    controller: 'StoryController',
                     controllerAs: 'vm'
                 }
             },
@@ -46,103 +46,99 @@
                 }],
             }
         })
-        .state('poem-detail', {
+        .state('story-detail', {
             parent: 'entity',
-            url: '/poem/{id}',
+            url: '/story/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'Poem'
+                pageTitle: 'Story'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/poem/poem-detail.html',
-                    controller: 'PoemDetailController',
+                    templateUrl: 'app/entities/story/story-detail.html',
+                    controller: 'StoryDetailController',
                     controllerAs: 'vm'
                 }
             },
             resolve: {
-                entity: ['$stateParams', 'Poem', function($stateParams, Poem) {
-                    return Poem.get({id : $stateParams.id});
+                entity: ['$stateParams', 'Story', function($stateParams, Story) {
+                    return Story.get({id : $stateParams.id});
                 }]
             }
         })
-        .state('poem.new', {
-            parent: 'poem',
+        .state('story.new', {
+            parent: 'story',
             url: '/new',
             data: {
                 authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/poem/poem-dialog.html',
-                    controller: 'PoemDialogController',
+                    templateUrl: 'app/entities/story/story-dialog.html',
+                    controller: 'StoryDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
                         entity: function () {
                             return {
-                                anthorName: null,
-                                title: null,
                                 content: null,
-                                year: null,
-                                period: null,
-                                tag: null,
+                                poemId: null,
                                 id: null
                             };
                         }
                     }
                 }).result.then(function() {
-                    $state.go('poem', null, { reload: true });
+                    $state.go('story', null, { reload: true });
                 }, function() {
-                    $state.go('poem');
+                    $state.go('story');
                 });
             }]
         })
-        .state('poem.edit', {
-            parent: 'poem',
+        .state('story.edit', {
+            parent: 'story',
             url: '/{id}/edit',
             data: {
                 authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/poem/poem-dialog.html',
-                    controller: 'PoemDialogController',
+                    templateUrl: 'app/entities/story/story-dialog.html',
+                    controller: 'StoryDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['Poem', function(Poem) {
-                            return Poem.get({id : $stateParams.id});
+                        entity: ['Story', function(Story) {
+                            return Story.get({id : $stateParams.id});
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('poem', null, { reload: true });
+                    $state.go('story', null, { reload: true });
                 }, function() {
                     $state.go('^');
                 });
             }]
         })
-        .state('poem.delete', {
-            parent: 'poem',
+        .state('story.delete', {
+            parent: 'story',
             url: '/{id}/delete',
             data: {
                 authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/poem/poem-delete-dialog.html',
-                    controller: 'PoemDeleteController',
+                    templateUrl: 'app/entities/story/story-delete-dialog.html',
+                    controller: 'StoryDeleteController',
                     controllerAs: 'vm',
                     size: 'md',
                     resolve: {
-                        entity: ['Poem', function(Poem) {
-                            return Poem.get({id : $stateParams.id});
+                        entity: ['Story', function(Story) {
+                            return Story.get({id : $stateParams.id});
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('poem', null, { reload: true });
+                    $state.go('story', null, { reload: true });
                 }, function() {
                     $state.go('^');
                 });

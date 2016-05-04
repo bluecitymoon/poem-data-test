@@ -32,8 +32,11 @@ public class Poem implements Serializable {
     @Column(name = "year")
     private String year;
 
-    @Transient
-    private String titlePinyin;
+    @Column(name = "period")
+    private String period;
+
+    @Column(name = "tag")
+    private String tag;
 
     @ManyToOne
     private Author author;
@@ -78,20 +81,28 @@ public class Poem implements Serializable {
         this.year = year;
     }
 
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     public Author getAuthor() {
         return author;
     }
 
     public void setAuthor(Author author) {
         this.author = author;
-    }
-
-    public String getTitlePinyin() {
-        return titlePinyin;
-    }
-
-    public void setTitlePinyin(String titlePinyin) {
-        this.titlePinyin = titlePinyin;
     }
 
     @Override
@@ -122,6 +133,8 @@ public class Poem implements Serializable {
             ", title='" + title + "'" +
             ", content='" + content + "'" +
             ", year='" + year + "'" +
+            ", period='" + period + "'" +
+            ", tag='" + tag + "'" +
             '}';
     }
 }

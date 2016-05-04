@@ -1,0 +1,22 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "content",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "20000"
+        },
+        {
+            "fieldName": "poemId",
+            "fieldType": "Long"
+        }
+    ],
+    "changelogDate": "20160504030655",
+    "dto": "no",
+    "service": "serviceImpl",
+    "entityTableName": "story",
+    "pagination": "pagination"
+}

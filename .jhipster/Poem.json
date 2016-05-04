@@ -28,6 +28,14 @@
         {
             "fieldName": "year",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "period",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "tag",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20160425031901",

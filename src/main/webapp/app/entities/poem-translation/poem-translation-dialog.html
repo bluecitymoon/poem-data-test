@@ -1,0 +1,44 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myPoemTranslationLabel">Create or edit a Poem Translation</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.poemTranslation.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.poemTranslation.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_translation">Translation</label>
+            <input type="text" class="form-control" name="translation" id="field_translation"
+                    ng-model="vm.poemTranslation.translation"
+                    ng-maxlength="20000" />
+            <div ng-show="editForm.translation.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.translation.$error.maxlength">
+                    This field cannot be longer than 20000 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_poemId">Poem Id</label>
+            <input type="number" class="form-control" name="poemId" id="field_poemId"
+                    ng-model="vm.poemTranslation.poemId"
+                     />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>
