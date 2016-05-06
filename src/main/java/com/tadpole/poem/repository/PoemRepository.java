@@ -11,4 +11,6 @@ import java.util.List;
  */
 public interface PoemRepository extends JpaRepository<Poem,Long> {
 
+    Poem findByResourceId(String resourceId);
+
 }

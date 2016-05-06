@@ -80,7 +80,7 @@ class PoemGatlingTest extends Simulation {
             .exec(http("Create new poem")
             .post("/api/poems")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "anthorName":"SAMPLE_TEXT", "title":"SAMPLE_TEXT", "content":"SAMPLE_TEXT", "year":"SAMPLE_TEXT", "period":"SAMPLE_TEXT", "tag":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "anthorName":"SAMPLE_TEXT", "title":"SAMPLE_TEXT", "content":"SAMPLE_TEXT", "year":"SAMPLE_TEXT", "period":"SAMPLE_TEXT", "tag":"SAMPLE_TEXT", "resourceId":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_poem_url"))).exitHereIfFailed
             .pause(10)

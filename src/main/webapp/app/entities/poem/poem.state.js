@@ -88,6 +88,7 @@
                                 year: null,
                                 period: null,
                                 tag: null,
+                                resourceId: null,
                                 id: null
                             };
                         }

@@ -4,14 +4,12 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.tadpole.poem.domain.Author;
-import com.tadpole.poem.domain.DetailResource;
-import com.tadpole.poem.domain.Job;
+import com.tadpole.poem.domain.*;
 import com.tadpole.poem.repository.AuthorRepository;
 import com.tadpole.poem.repository.DetailResourceRepository;
+import com.tadpole.poem.repository.JobLogRepository;
 import com.tadpole.poem.service.AuthorService;
 import com.tadpole.poem.service.PoemService;
-import com.tadpole.poem.domain.Poem;
 import com.tadpole.poem.repository.PoemRepository;
 import com.tadpole.poem.service.util.GrabPageProcessor;
 import org.jsoup.Jsoup;
@@ -28,6 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -50,13 +49,15 @@ public class PoemServiceImpl implements PoemService {
     @Inject
     private AuthorService authorService;
 
+    @Inject
+    private JobLogRepository jobLogRepository;
+
     /**
      * Save a poem.
      *
      * @param poem the entity to save
      * @return the persisted entity
      */
-    @Transactional
     public Poem save(Poem poem) {
         log.debug("Request to save Poem : {}", poem);
         Poem result = poemRepository.save(poem);
@@ -114,73 +115,52 @@ public class PoemServiceImpl implements PoemService {
         try {
             HtmlPage htmlPage = webClient.getPage(new URL(fullUrl));
 
-
             Document document = Jsoup.parse(htmlPage.getWebResponse().getContentAsString());
             Element element = document.getElementsByClass("son2").last();
-
             Elements elements = element.getElementsByTag("p");
-            Element[] objects = (Element[]) elements.toArray();
 
-            String periodElement = objects[0].text().substring("朝代：".length());
-            Elements authorElements = objects[1].children();
+            String periodElement = elements.get(0).text().substring("朝代：".length());
+            poem.setPeriod(periodElement.trim());
+
+            Elements authorElements = elements.get(1).children();
             Element authorElement = null;
             String authorName = "";
             if (authorElements.size() == 2) {
+
                 authorElement = authorElements.last();
                 authorName = authorElement.text();
 
-            } else {
-                authorName = objects[1].text().substring("作者".length());
-            }
-            Element contentElement = null;
+                String authorHref = authorElement.attr("href");
+                Author author = authorRepository.findByLink(authorHref);
 
-            if (objects.length > 3) {
-                contentElement = elements.last();
-            }
+                if (author == null) {
 
+                    Author newAuthor = new Author();
+                    newAuthor.setLink(authorHref);
+                    newAuthor.setName(authorName);
 
+                    Author savedAuthor = authorService.save(newAuthor);
 
-            String poemContentXpath = "//*[contains(concat(\" \", normalize-space(@class), \" \"), \" son2 \")]";
-            List<HtmlDivision> divisions = (List<HtmlDivision>) htmlPage.getByXPath(poemContentXpath);
-
-            for (HtmlDivision division : divisions) {
-
-                String text = division.getTextContent();
-                if (text.contains("原文：")) {
-                    int start = text.indexOf("原文：") + "原文：".length();
-
-                    String content = text.substring(start);
-
-                    poem.setContent(content.trim());
-                    poem.setTitle(detailResource.getTitle());
-
-                    List<HtmlAnchor> anchors = (List<HtmlAnchor>) division.getByXPath(poemContentXpath + "//a");
-
-                    for (HtmlAnchor htmlAnchor : anchors) {
-
-                        String href = htmlAnchor.getHrefAttribute();
-
-                        if (href.startsWith("/author_")) {
-
-                            Author author = authorRepository.findByLink(href);
-
-                            if (author == null) {
-
-                                Author newAuthor = new Author();
-                                newAuthor.setLink(href);
-                                newAuthor.setName(htmlAnchor.getTextContent().trim());
-
-                                Author savedAuthor = authorService.save(newAuthor);
-
-                                poem.setAuthor(savedAuthor);
-                            } else {
-                                poem.setAuthor(author);
-                            }
-                            poem.setAnthorName(htmlAnchor.getTextContent());
-                        }
-                    }
+                    poem.setAuthor(savedAuthor);
+                } else {
+                    poem.setAuthor(author);
                 }
 
+            } else {
+                authorName = elements.get(1).text().substring("作者".length());
+            }
+
+            poem.setAnthorName(authorName);
+
+            Element contentElement = null;
+            if (elements.size() > 3) {
+                contentElement = elements.last();
+
+                poem.setContent(contentElement.text().trim());
+            } else {
+
+                String poemContentTotal = element.text().substring(element.text().indexOf("原文：") + "原文：".length());
+                poem.setContent(poemContentTotal);
             }
 
         } catch (IOException e) {
@@ -192,7 +172,24 @@ public class PoemServiceImpl implements PoemService {
 
         }
 
-        poemRepository.save(poem);
+        Poem existedPoem = poemRepository.findByResourceId(detailResource.getOutsideId());
+
+        JobLog jobLog = new JobLog();
+        if (existedPoem == null) {
+
+            poemRepository.save(poem);
+
+            jobLog.setJob(job);
+            jobLog.setStart(ZonedDateTime.now());
+            jobLog.setMessage("save new poem " + poem.getTitle());
+
+        } else {
+
+            jobLog.setJob(job);
+            jobLog.setStart(ZonedDateTime.now());
+            jobLog.setMessage("skip saving existed poem" + poem.getTitle());
+        }
+        jobLogRepository.save(jobLog);
 
         return poem;
     }

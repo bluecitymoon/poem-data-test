@@ -160,6 +160,12 @@ public class JobServiceImpl implements JobService {
                 job.setLastStop(ZonedDateTime.now());
 
                 jobRepository.save(job);
+                break;
+
+//            case "Grab-single-poem":
+//
+//                poemService.grabSinglePoem()
+//                break;
             default:
                 break;
         }
