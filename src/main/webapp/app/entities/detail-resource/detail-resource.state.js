@@ -87,6 +87,7 @@
                                 visitCount: null,
                                 active: null,
                                 title: null,
+                                tag: null,
                                 id: null
                             };
                         }

@@ -54,6 +54,8 @@ public class DetailResourceResourceIntTest {
     private static final Boolean UPDATED_ACTIVE = true;
     private static final String DEFAULT_TITLE = "AAAAA";
     private static final String UPDATED_TITLE = "BBBBB";
+    private static final String DEFAULT_TAG = "AAAAA";
+    private static final String UPDATED_TAG = "BBBBB";
 
     @Inject
     private DetailResourceRepository detailResourceRepository;
@@ -89,6 +91,7 @@ public class DetailResourceResourceIntTest {
         detailResource.setVisitCount(DEFAULT_VISIT_COUNT);
         detailResource.setActive(DEFAULT_ACTIVE);
         detailResource.setTitle(DEFAULT_TITLE);
+        detailResource.setTag(DEFAULT_TAG);
     }
 
     @Test
@@ -112,6 +115,7 @@ public class DetailResourceResourceIntTest {
         assertThat(testDetailResource.getVisitCount()).isEqualTo(DEFAULT_VISIT_COUNT);
         assertThat(testDetailResource.isActive()).isEqualTo(DEFAULT_ACTIVE);
         assertThat(testDetailResource.getTitle()).isEqualTo(DEFAULT_TITLE);
+        assertThat(testDetailResource.getTag()).isEqualTo(DEFAULT_TAG);
     }
 
     @Test
@@ -129,7 +133,8 @@ public class DetailResourceResourceIntTest {
                 .andExpect(jsonPath("$.[*].outsideId").value(hasItem(DEFAULT_OUTSIDE_ID.toString())))
                 .andExpect(jsonPath("$.[*].visitCount").value(hasItem(DEFAULT_VISIT_COUNT)))
                 .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())))
-                .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())));
+                .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())))
+                .andExpect(jsonPath("$.[*].tag").value(hasItem(DEFAULT_TAG.toString())));
     }
 
     @Test
@@ -147,7 +152,8 @@ public class DetailResourceResourceIntTest {
             .andExpect(jsonPath("$.outsideId").value(DEFAULT_OUTSIDE_ID.toString()))
             .andExpect(jsonPath("$.visitCount").value(DEFAULT_VISIT_COUNT))
             .andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()))
-            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE.toString()));
+            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE.toString()))
+            .andExpect(jsonPath("$.tag").value(DEFAULT_TAG.toString()));
     }
 
     @Test
@@ -174,6 +180,7 @@ public class DetailResourceResourceIntTest {
         updatedDetailResource.setVisitCount(UPDATED_VISIT_COUNT);
         updatedDetailResource.setActive(UPDATED_ACTIVE);
         updatedDetailResource.setTitle(UPDATED_TITLE);
+        updatedDetailResource.setTag(UPDATED_TAG);
 
         restDetailResourceMockMvc.perform(put("/api/detail-resources")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -189,6 +196,7 @@ public class DetailResourceResourceIntTest {
         assertThat(testDetailResource.getVisitCount()).isEqualTo(UPDATED_VISIT_COUNT);
         assertThat(testDetailResource.isActive()).isEqualTo(UPDATED_ACTIVE);
         assertThat(testDetailResource.getTitle()).isEqualTo(UPDATED_TITLE);
+        assertThat(testDetailResource.getTag()).isEqualTo(UPDATED_TAG);
     }
 
     @Test

@@ -124,6 +124,8 @@ public class DetailResourceServiceImpl implements DetailResourceService {
 
                 if (page == null) break;
 
+                page.forEach(p -> p.setTag(tag.getIdentifier()));
+
                 saveDetailResource(page, job);
 
                 i++;

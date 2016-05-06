@@ -33,6 +33,9 @@ public class DetailResource implements Serializable {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "tag")
+    private String tag;
+
     public Long getId() {
         return id;
     }
@@ -81,6 +84,14 @@ public class DetailResource implements Serializable {
         this.title = title;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -110,6 +121,7 @@ public class DetailResource implements Serializable {
             ", visitCount='" + visitCount + "'" +
             ", active='" + active + "'" +
             ", title='" + title + "'" +
+            ", tag='" + tag + "'" +
             '}';
     }
 }

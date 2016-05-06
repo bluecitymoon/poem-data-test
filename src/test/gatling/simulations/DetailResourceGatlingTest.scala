@@ -80,7 +80,7 @@ class DetailResourceGatlingTest extends Simulation {
             .exec(http("Create new detailResource")
             .post("/api/detail-resources")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "url":"SAMPLE_TEXT", "outsideId":"SAMPLE_TEXT", "visitCount":"0", "active":null, "title":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "url":"SAMPLE_TEXT", "outsideId":"SAMPLE_TEXT", "visitCount":"0", "active":null, "title":"SAMPLE_TEXT", "tag":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_detailResource_url"))).exitHereIfFailed
             .pause(10)
