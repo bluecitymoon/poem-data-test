@@ -40,6 +40,10 @@
         {
             "fieldName": "resourceId",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "titlePinyin",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20160425031901",

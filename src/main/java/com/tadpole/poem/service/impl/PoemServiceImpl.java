@@ -12,6 +12,7 @@ import com.tadpole.poem.service.AuthorService;
 import com.tadpole.poem.service.PoemService;
 import com.tadpole.poem.repository.PoemRepository;
 import com.tadpole.poem.service.util.GrabPageProcessor;
+import com.tadpole.poem.service.util.PinyinTranslator;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -112,6 +113,8 @@ public class PoemServiceImpl implements PoemService {
         String fullUrl = job.getTarget() + detailResource.getUrl();
 
         Poem poem = new Poem();
+        poem.setTitle(detailResource.getTitle());
+        poem.setTitlePinyin(PinyinTranslator.getFullSpell(detailResource.getTitle()));
         try {
             HtmlPage htmlPage = webClient.getPage(new URL(fullUrl));
 
@@ -156,11 +159,11 @@ public class PoemServiceImpl implements PoemService {
             if (elements.size() > 3) {
                 contentElement = elements.last();
 
-                poem.setContent(contentElement.text().trim());
+                poem.setContent(PinyinTranslator.removeGuahaoThingsInString(contentElement.text().trim()));
             } else {
 
                 String poemContentTotal = element.text().substring(element.text().indexOf("原文：") + "原文：".length());
-                poem.setContent(poemContentTotal);
+                poem.setContent(PinyinTranslator.removeGuahaoThingsInString(poemContentTotal));
             }
 
         } catch (IOException e) {

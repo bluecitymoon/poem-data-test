@@ -89,6 +89,7 @@
                                 period: null,
                                 tag: null,
                                 resourceId: null,
+                                titlePinyin: null,
                                 id: null
                             };
                         }

@@ -17,17 +17,16 @@ import java.util.List;
  * Service Implementation for managing JobLog.
  */
 @Service
-@Transactional
 public class JobLogServiceImpl implements JobLogService{
 
     private final Logger log = LoggerFactory.getLogger(JobLogServiceImpl.class);
-    
+
     @Inject
     private JobLogRepository jobLogRepository;
-    
+
     /**
      * Save a jobLog.
-     * 
+     *
      * @param jobLog the entity to save
      * @return the persisted entity
      */
@@ -39,14 +38,14 @@ public class JobLogServiceImpl implements JobLogService{
 
     /**
      *  Get all the jobLogs.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public Page<JobLog> findAll(Pageable pageable) {
         log.debug("Request to get all JobLogs");
-        Page<JobLog> result = jobLogRepository.findAll(pageable); 
+        Page<JobLog> result = jobLogRepository.findAll(pageable);
         return result;
     }
 
@@ -56,7 +55,7 @@ public class JobLogServiceImpl implements JobLogService{
      *  @param id the id of the entity
      *  @return the entity
      */
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public JobLog findOne(Long id) {
         log.debug("Request to get JobLog : {}", id);
         JobLog jobLog = jobLogRepository.findOne(id);
@@ -65,7 +64,7 @@ public class JobLogServiceImpl implements JobLogService{
 
     /**
      *  Delete the  jobLog by id.
-     *  
+     *
      *  @param id the id of the entity
      */
     public void delete(Long id) {

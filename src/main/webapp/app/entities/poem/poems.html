@@ -26,6 +26,7 @@
                     <th jh-sort-by="period"><span>Period</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="tag"><span>Tag</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="resourceId"><span>Resource Id</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="titlePinyin"><span>Title Pinyin</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="author.id"><span>Author</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
@@ -40,6 +41,7 @@
                     <td>{{poem.period}}</td>
                     <td>{{poem.tag}}</td>
                     <td>{{poem.resourceId}}</td>
+                    <td>{{poem.titlePinyin}}</td>
                     <td>
                         <a ui-sref="author-detail({id:poem.author.id})">{{poem.author.id}}</a>
                     </td>

@@ -56,6 +56,8 @@ public class PoemResourceIntTest {
     private static final String UPDATED_TAG = "BBBBB";
     private static final String DEFAULT_RESOURCE_ID = "AAAAA";
     private static final String UPDATED_RESOURCE_ID = "BBBBB";
+    private static final String DEFAULT_TITLE_PINYIN = "AAAAA";
+    private static final String UPDATED_TITLE_PINYIN = "BBBBB";
 
     @Inject
     private PoemRepository poemRepository;
@@ -93,6 +95,7 @@ public class PoemResourceIntTest {
         poem.setPeriod(DEFAULT_PERIOD);
         poem.setTag(DEFAULT_TAG);
         poem.setResourceId(DEFAULT_RESOURCE_ID);
+        poem.setTitlePinyin(DEFAULT_TITLE_PINYIN);
     }
 
     @Test
@@ -118,6 +121,7 @@ public class PoemResourceIntTest {
         assertThat(testPoem.getPeriod()).isEqualTo(DEFAULT_PERIOD);
         assertThat(testPoem.getTag()).isEqualTo(DEFAULT_TAG);
         assertThat(testPoem.getResourceId()).isEqualTo(DEFAULT_RESOURCE_ID);
+        assertThat(testPoem.getTitlePinyin()).isEqualTo(DEFAULT_TITLE_PINYIN);
     }
 
     @Test
@@ -137,7 +141,8 @@ public class PoemResourceIntTest {
                 .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR.toString())))
                 .andExpect(jsonPath("$.[*].period").value(hasItem(DEFAULT_PERIOD.toString())))
                 .andExpect(jsonPath("$.[*].tag").value(hasItem(DEFAULT_TAG.toString())))
-                .andExpect(jsonPath("$.[*].resourceId").value(hasItem(DEFAULT_RESOURCE_ID.toString())));
+                .andExpect(jsonPath("$.[*].resourceId").value(hasItem(DEFAULT_RESOURCE_ID.toString())))
+                .andExpect(jsonPath("$.[*].titlePinyin").value(hasItem(DEFAULT_TITLE_PINYIN.toString())));
     }
 
     @Test
@@ -157,7 +162,8 @@ public class PoemResourceIntTest {
             .andExpect(jsonPath("$.year").value(DEFAULT_YEAR.toString()))
             .andExpect(jsonPath("$.period").value(DEFAULT_PERIOD.toString()))
             .andExpect(jsonPath("$.tag").value(DEFAULT_TAG.toString()))
-            .andExpect(jsonPath("$.resourceId").value(DEFAULT_RESOURCE_ID.toString()));
+            .andExpect(jsonPath("$.resourceId").value(DEFAULT_RESOURCE_ID.toString()))
+            .andExpect(jsonPath("$.titlePinyin").value(DEFAULT_TITLE_PINYIN.toString()));
     }
 
     @Test
@@ -186,6 +192,7 @@ public class PoemResourceIntTest {
         updatedPoem.setPeriod(UPDATED_PERIOD);
         updatedPoem.setTag(UPDATED_TAG);
         updatedPoem.setResourceId(UPDATED_RESOURCE_ID);
+        updatedPoem.setTitlePinyin(UPDATED_TITLE_PINYIN);
 
         restPoemMockMvc.perform(put("/api/poems")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -203,6 +210,7 @@ public class PoemResourceIntTest {
         assertThat(testPoem.getPeriod()).isEqualTo(UPDATED_PERIOD);
         assertThat(testPoem.getTag()).isEqualTo(UPDATED_TAG);
         assertThat(testPoem.getResourceId()).isEqualTo(UPDATED_RESOURCE_ID);
+        assertThat(testPoem.getTitlePinyin()).isEqualTo(UPDATED_TITLE_PINYIN);
     }
 
     @Test

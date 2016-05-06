@@ -41,6 +41,9 @@ public class Poem implements Serializable {
     @Column(name = "resource_id")
     private String resourceId;
 
+    @Column(name = "title_pinyin")
+    private String titlePinyin;
+
     @ManyToOne
     private Author author;
 
@@ -108,6 +111,14 @@ public class Poem implements Serializable {
         this.resourceId = resourceId;
     }
 
+    public String getTitlePinyin() {
+        return titlePinyin;
+    }
+
+    public void setTitlePinyin(String titlePinyin) {
+        this.titlePinyin = titlePinyin;
+    }
+
     public Author getAuthor() {
         return author;
     }
@@ -147,6 +158,7 @@ public class Poem implements Serializable {
             ", period='" + period + "'" +
             ", tag='" + tag + "'" +
             ", resourceId='" + resourceId + "'" +
+            ", titlePinyin='" + titlePinyin + "'" +
             '}';
     }
 }
