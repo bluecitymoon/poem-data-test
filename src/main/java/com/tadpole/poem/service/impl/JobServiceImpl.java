@@ -162,10 +162,15 @@ public class JobServiceImpl implements JobService {
                 jobRepository.save(job);
                 break;
 
-//            case "Grab-single-poem":
-//
-//                poemService.grabSinglePoem()
-//                break;
+            case "get-poem-resource-by-author":
+
+                detailResourceService.grabAllDetailByAuthor(job);
+
+                job.setLastStop(ZonedDateTime.now());
+
+                jobRepository.save(job);
+                break;
+
             default:
                 break;
         }

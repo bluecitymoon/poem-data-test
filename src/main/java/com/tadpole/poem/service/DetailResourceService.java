@@ -45,5 +45,7 @@ public interface DetailResourceService {
 
     boolean grabAllDetailLinks(Job job);
 
+    void grabAllDetailByAuthor(Job job);
+
     void grabDetailLinksInTypes(Job job);
 }

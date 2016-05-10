@@ -180,14 +180,9 @@ public class GrabPageProcessor {
     }
 
     public static void main(String[] args) throws Exception {
-
-        DetailResource detailResource = new DetailResource();
-        detailResource.setTitle("Your s");
-        detailResource.setUrl("/view_71422.aspx");
-
-        Job job = new Job();
-        job.setTarget("http://so.gushiwen.org");
-        System.err.print(getPoemContent(job, detailResource, newWebClient()));
+//%e7%99%bd%e5%b1%85%e6%98%93
+        //%E7%99%BD%E5%B1%85%E6%98%93
+        System.out.print(URLEncoder.encode("白居易", "utf-8"));
 
     }
 

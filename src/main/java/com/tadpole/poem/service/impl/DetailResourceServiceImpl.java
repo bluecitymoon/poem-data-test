@@ -1,15 +1,21 @@
 package com.tadpole.poem.service.impl;
 
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.tadpole.poem.domain.Job;
-import com.tadpole.poem.domain.JobLog;
-import com.tadpole.poem.domain.Tag;
+import com.gargoylesoftware.htmlunit.javascript.host.Element;
+import com.tadpole.poem.domain.*;
+import com.tadpole.poem.domain.enumeration.JobExecutionResult;
+import com.tadpole.poem.repository.AuthorRepository;
 import com.tadpole.poem.repository.JobLogRepository;
 import com.tadpole.poem.repository.TagRepository;
 import com.tadpole.poem.service.DetailResourceService;
-import com.tadpole.poem.domain.DetailResource;
 import com.tadpole.poem.repository.DetailResourceRepository;
 import com.tadpole.poem.service.util.GrabPageProcessor;
+import com.tadpole.poem.service.util.MathUtil;
+import com.tadpole.poem.service.util.PinyinTranslator;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,8 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Service Implementation for managing DetailResource.
@@ -37,6 +45,9 @@ public class DetailResourceServiceImpl implements DetailResourceService {
 
     @Inject
     private TagRepository tagRepository;
+
+    @Inject
+    private AuthorRepository authorRepository;
 
     /**
      * Save a detailResource.
@@ -109,6 +120,76 @@ public class DetailResourceServiceImpl implements DetailResourceService {
             jobLogRepository.save(jobLog);
         }
         return false;
+    }
+
+    @Override
+    public void grabAllDetailByAuthor(Job job) {
+
+        List<Author> authors = authorRepository.findAll();
+        authors.forEach(author -> {
+
+            int i = 1;
+
+            boolean getNextPage = true;
+            while (getNextPage) {
+
+                String fullUrl = job.getTarget() + author.getName() + "&page=" + i;
+
+                boolean hasResult = true;
+                try {
+                    Document document = Jsoup.connect(fullUrl).get();
+
+                    Stream<org.jsoup.nodes.Element> resources = document.getElementsByTag("a").stream().filter(url -> (StringUtils.isNotEmpty(url.attr("href")) && url.attr("href").startsWith("/view")));
+                    if (resources.count() == 0) {
+                        break;
+                    }
+
+                    resources.close();
+                    
+                    resources.forEach(url -> {
+
+                        String href = url.attr("href");
+                        DetailResource detailResource = detailResourceRepository.findByUrl(href);
+
+                        if (detailResource == null) {
+
+                            detailResource = new DetailResource();
+                            detailResource.setTitle(url.text());
+                            detailResource.setOutsideId(MathUtil.getNumber(href).toString());
+                            detailResource.setUrl(href);
+
+                            detailResourceRepository.save(detailResource);
+
+                            JobLog jobLog = new JobLog();
+                            jobLog.setMessage("saved new resource " + detailResource.getTitle());
+                            jobLog.setJob(job);
+
+                            jobLogRepository.save(jobLog);
+                        } else {
+
+                            JobLog jobLog = new JobLog();
+                            jobLog.setMessage("skip saving existed" + detailResource.getTitle());
+                            jobLog.setJob(job);
+
+                            jobLogRepository.save(jobLog);
+                        }
+                    });
+
+                    i++;
+
+                } catch (IOException e) {
+
+                    JobLog jobLog = new JobLog();
+                    jobLog.setMessage("get document failed " + fullUrl + " Exception " + e.getMessage());
+                    jobLog.setResult(JobExecutionResult.fail);
+
+                    jobLog.setJob(job);
+
+                    jobLogRepository.save(jobLog);
+                }
+            }
+
+        });
     }
 
     @Override

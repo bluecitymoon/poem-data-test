@@ -115,6 +115,8 @@ public class PoemServiceImpl implements PoemService {
         Poem poem = new Poem();
         poem.setTitle(detailResource.getTitle());
         poem.setTitlePinyin(PinyinTranslator.getFullSpell(detailResource.getTitle()));
+        poem.setTag(detailResource.getTag());
+        poem.setResourceId(detailResource.getOutsideId());
         try {
             HtmlPage htmlPage = webClient.getPage(new URL(fullUrl));
 
@@ -150,7 +152,7 @@ public class PoemServiceImpl implements PoemService {
                 }
 
             } else {
-                authorName = elements.get(1).text().substring("作者".length());
+                authorName = elements.get(1).text().substring("作者：".length());
             }
 
             poem.setAnthorName(authorName);

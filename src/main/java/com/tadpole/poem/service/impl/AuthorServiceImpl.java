@@ -283,10 +283,7 @@ public class AuthorServiceImpl implements AuthorService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         }
-
 
         String stringFilesPath = configurationRepository.findByIdentifier("JSON_FILE_PATH").getContent();
         try {

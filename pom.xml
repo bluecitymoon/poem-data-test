@@ -61,6 +61,7 @@
         <spring-security-oauth2.version>2.0.9.RELEASE</spring-security-oauth2.version>
         <spring-security.version>4.0.4.RELEASE</spring-security.version>
         <springfox.version>2.4.0</springfox.version>
+        <start-class>com.tadpole.poem.PoemdataApp</start-class>
     </properties>
 
     <dependencies>
