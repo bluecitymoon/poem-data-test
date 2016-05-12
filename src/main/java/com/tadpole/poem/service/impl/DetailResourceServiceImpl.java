@@ -2,6 +2,7 @@ package com.tadpole.poem.service.impl;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.javascript.host.Element;
+import com.google.common.collect.Lists;
 import com.tadpole.poem.domain.*;
 import com.tadpole.poem.domain.enumeration.JobExecutionResult;
 import com.tadpole.poem.repository.AuthorRepository;
@@ -131,22 +132,27 @@ public class DetailResourceServiceImpl implements DetailResourceService {
             int i = 1;
 
             boolean getNextPage = true;
-            while (getNextPage) {
+            while (true) {
 
                 String fullUrl = job.getTarget() + author.getName() + "&page=" + i;
 
-                boolean hasResult = true;
                 try {
                     Document document = Jsoup.connect(fullUrl).get();
 
-                    Stream<org.jsoup.nodes.Element> resources = document.getElementsByTag("a").stream().filter(url -> (StringUtils.isNotEmpty(url.attr("href")) && url.attr("href").startsWith("/view")));
-                    if (resources.count() == 0) {
+                    List<org.jsoup.nodes.Element> elements = Lists.newArrayList();
+                    Elements elementsInPage = document.getElementsByTag("a");
+                    for (org.jsoup.nodes.Element url: elementsInPage) {
+
+                        String href = url.attr("href");
+                        if (StringUtils.isNotEmpty(href) && href.startsWith("/view")) {
+                            elements.add(url);
+                        }
+                    }
+                    if (elements.isEmpty()) {
                         break;
                     }
 
-                    resources.close();
-                    
-                    resources.forEach(url -> {
+                    for (org.jsoup.nodes.Element url : elements) {
 
                         String href = url.attr("href");
                         DetailResource detailResource = detailResourceRepository.findByUrl(href);
@@ -173,7 +179,7 @@ public class DetailResourceServiceImpl implements DetailResourceService {
 
                             jobLogRepository.save(jobLog);
                         }
-                    });
+                    }
 
                     i++;
 

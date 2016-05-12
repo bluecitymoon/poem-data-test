@@ -2,6 +2,7 @@ package com.tadpole.poem.domain;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ public class DetailResource implements Serializable {
     @Column(name = "active")
     private Boolean active;
 
+    @Size(max = 1000)
     @Column(name = "title")
     private String title;
 

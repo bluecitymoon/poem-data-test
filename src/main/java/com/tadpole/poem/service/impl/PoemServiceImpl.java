@@ -204,7 +204,7 @@ public class PoemServiceImpl implements PoemService {
      * @return
      */
     public boolean grabAllPoems(Job job) {
-        List<DetailResource> urls = detailResourceRepository.findByVisitCountIsNull();
+        List<DetailResource> urls = detailResourceRepository.findAll();
 
         WebClient webClient = GrabPageProcessor.newWebClient();
 
