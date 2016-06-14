@@ -51,4 +51,8 @@ public interface AuthorService {
     void downloadAvatars(Job job, WebClient webclient);
 
     void objectsToJsonFiles(Job job);
+
+    void authorsToJsonFile(Job job);
+
+    void parseBirthDeathYear(Job job);
 }

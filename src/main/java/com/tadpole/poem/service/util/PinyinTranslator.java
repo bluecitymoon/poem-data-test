@@ -8,6 +8,8 @@ import com.google.common.collect.Lists;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PinyinTranslator {
     private static LinkedHashMap spellMap = null;
@@ -579,9 +581,19 @@ public class PinyinTranslator {
 //        // 字母 转 ascii
 //        System.out.println(PinyinTranslator.getCnAscii('0'));
 
-        char[] test = "　　晋太元中，武陵人捕鱼为业".toCharArray();
-        for (char t : test) {
-            System.out.println(t);
+//        char[] test = "　　晋太元中，武陵人捕鱼为业".toCharArray();
+//        for (char t : test) {
+//            System.out.println(t);
+//        }
+
+        String test = "　　石崇（249年—300年），字季伦，小名齐奴。渤海南皮（今河北南皮东北）人。西晋开国元勋石苞第六子，西晋时期文学家、大臣、富豪，“金谷二十四友”之一。";
+
+        String pattern = "（(.*?)）";
+        Pattern patternObject = Pattern.compile(pattern);
+        Matcher matcher = patternObject.matcher(test);
+
+        while (matcher.find()) {
+            System.out.println(matcher.group(0));
         }
     }
 

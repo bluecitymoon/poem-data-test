@@ -15,8 +15,7 @@ import com.tadpole.poem.repository.PoemRepository;
 import com.tadpole.poem.service.AuthorService;
 import com.tadpole.poem.domain.Author;
 import com.tadpole.poem.repository.AuthorRepository;
-import com.tadpole.poem.service.util.GrabPageProcessor;
-import com.tadpole.poem.service.util.PinyinTranslator;
+import com.tadpole.poem.service.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +32,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import static com.tadpole.poem.service.util.PrintUtil.println;
 
 /**
  * Service Implementation for managing Author.
@@ -291,5 +291,59 @@ public class AuthorServiceImpl implements AuthorService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void authorsToJsonFile(Job job) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+    }
+
+    @Override
+    public void parseBirthDeathYear(Job job) {
+
+        List<Author> authors = authorRepository.findByBirthYearIsNullAndDieYearIsNull();
+        for (Author author : authors) {
+
+            String description = author.getDescription();
+
+            String originalBirthday = AuthorUtil.getPossibleBirthdayString(description);
+
+            if (originalBirthday != null) {
+
+                List<Integer> numbers = MathUtil.getNumbers(originalBirthday);
+
+                if (numbers.size() == 2) {
+
+                    author.setBirthYear("" + numbers.get(0));
+                    author.setDieYear("" + numbers.get(1));
+
+                    authorRepository.save(author);
+
+                } else if (numbers.size() == 4) {
+
+                    Integer first = numbers.get(0);
+                    Integer second = numbers.get(1);
+                    Integer third = numbers.get(2);
+                    Integer fourth = numbers.get(3);
+
+                    if (second > first && fourth > third) {
+
+                        author.setBirthYear("" + first);
+                        author.setDieYear("" + second);
+
+                        authorRepository.save(author);
+                    }
+
+                } else if (numbers.size() == 1) {
+
+                }
+            }
+
+            println(originalBirthday);
+
+        }
+
+        
     }
 }

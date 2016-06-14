@@ -171,6 +171,14 @@ public class JobServiceImpl implements JobService {
                 jobRepository.save(job);
                 break;
 
+            case "fill-up-author-birthday":
+
+                authorService.parseBirthDeathYear(job);
+
+                job.setLastStop(ZonedDateTime.now());
+
+                jobRepository.save(job);
+
             default:
                 break;
         }

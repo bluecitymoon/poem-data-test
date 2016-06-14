@@ -15,4 +15,7 @@ public interface AuthorRepository extends JpaRepository<Author,Long> {
 
     List<Author> findByDescriptionIsNull();
 
+    List<Author> findByBirthYearIsNullAndDieYearIsNull();
+
+    List<Author> findByBirthYearIsNotNullAndDieYearIsNotNull();
 }
