@@ -58,7 +58,10 @@ public class Author implements Serializable {
 
     @Column(name = "age_description")
     private String ageDescription;
-//
+
+    @Column(name = "period")
+    private String period;
+
 //    @OneToMany(mappedBy = "author")
 //    @JsonIgnore
 //    private Set<Poem> poems = new HashSet<>();
@@ -167,6 +170,14 @@ public class Author implements Serializable {
         this.ageDescription = ageDescription;
     }
 
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
 //    public Set<Poem> getPoems() {
 //        return poems;
 //    }
@@ -211,6 +222,7 @@ public class Author implements Serializable {
             ", referenceAvatar='" + referenceAvatar + "'" +
             ", age='" + age + "'" +
             ", ageDescription='" + ageDescription + "'" +
+            ", period='" + period + "'" +
             '}';
     }
 }

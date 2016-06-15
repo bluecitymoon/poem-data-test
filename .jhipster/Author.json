@@ -59,6 +59,10 @@
         {
             "fieldName": "ageDescription",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "period",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20160425032338",

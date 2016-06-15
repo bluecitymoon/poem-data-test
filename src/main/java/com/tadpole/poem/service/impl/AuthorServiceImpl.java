@@ -7,13 +7,11 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlParagraph;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.tadpole.poem.domain.Configuration;
-import com.tadpole.poem.domain.Job;
-import com.tadpole.poem.domain.Poem;
+import com.tadpole.poem.domain.*;
 import com.tadpole.poem.repository.ConfigurationRepository;
+import com.tadpole.poem.repository.JobLogRepository;
 import com.tadpole.poem.repository.PoemRepository;
 import com.tadpole.poem.service.AuthorService;
-import com.tadpole.poem.domain.Author;
 import com.tadpole.poem.repository.AuthorRepository;
 import com.tadpole.poem.service.util.*;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +34,8 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+
 import static com.tadpole.poem.service.util.PrintUtil.println;
 
 /**
@@ -54,6 +54,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Inject
     private PoemRepository poemRepository;
+
+    @Inject
+    private JobLogRepository jobLogRepository;
 
 
     /**
@@ -407,6 +410,7 @@ public class AuthorServiceImpl implements AuthorService {
                 for (Element element: elements) {
 
                     Elements links = element.getElementsByTag("a");
+
                     if (links.size() == 3) {
 
                         Element imgElement = links.first();
@@ -414,8 +418,94 @@ public class AuthorServiceImpl implements AuthorService {
 
                         Author author = authorRepository.findByLink(href);
 
+                        if (author == null) {
+
+                            author = new Author();
+                            author.setLink(href);
+
+                            Element image = imgElement.children().first();
+
+                            author.setReferenceAvatar(image.attr("src"));
+                            author.setName(image.attr("alt"));
+
+
+                            Elements periodElements = element.getElementsMatchingOwnText(Pattern.compile("朝代：(.*?)"));
+                            if (!periodElements.isEmpty()) {
+
+                                String period = periodElements.first().text().substring("朝代：".length());
+
+                                PrintUtil.println(period);
+                                author.setPeriod(period);
+                            }
+
+                            authorRepository.save(author);
+
+                            JobLog jobLog = new JobLog();
+                            jobLog.setMessage("saved new author " + author.toString());
+                            jobLog.setJob(job);
+
+                            jobLogRepository.save(jobLog);
+
+                        } else if (author.getPeriod() == null) {
+
+                            Elements periodElements = element.getElementsMatchingOwnText(Pattern.compile("朝代：(.*?)"));
+                            if (!periodElements.isEmpty()) {
+                                author.setPeriod(periodElements.first().text().substring("朝代：".length()));
+                            }
+
+                            authorRepository.save(author);
+
+                            JobLog jobLog = new JobLog();
+                            jobLog.setMessage("update period for " + author.getName());
+                            jobLog.setJob(job);
+
+                            jobLogRepository.save(jobLog);
+
+                        }
+
+                    } else if (links.size()  == 2 ) {
+
+                        Element nameElement = links.first();
+                        String href = nameElement.attr("href");
+
+                        Author author = authorRepository.findByLink(href);
+
+                        if (author == null) {
+
+                            author = new Author();
+                            author.setLink(href);
+                            author.setName(nameElement.text());
+
+
+                            Elements periodElements = element.getElementsMatchingOwnText(Pattern.compile("朝代：(.*?)"));
+                            if (!periodElements.isEmpty()) {
+                                author.setPeriod(periodElements.first().text().substring("朝代：".length()));
+                            }
+
+                            authorRepository.save(author);
+
+                            JobLog jobLog = new JobLog();
+                            jobLog.setMessage("saved new author " + author.toString());
+                            jobLog.setJob(job);
+
+                            jobLogRepository.save(jobLog);
+
+                        } else if (author.getPeriod() == null) {
+
+                            Elements periodElements = element.getElementsMatchingOwnText(Pattern.compile("朝代：(.*?)"));
+                            if (!periodElements.isEmpty()) {
+                                author.setPeriod(periodElements.first().text().substring("朝代：".length()));
+                            }
+
+                            authorRepository.save(author);
+
+                            JobLog jobLog = new JobLog();
+                            jobLog.setMessage("update period for " + author.getName());
+                            jobLog.setJob(job);
+
+                            jobLogRepository.save(jobLog);
+                        }
                     }
-                    Elements imgElements = element.getElementsByTag("img");
                 }
 
             } catch (IOException e) {
