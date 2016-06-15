@@ -179,6 +179,14 @@ public class JobServiceImpl implements JobService {
 
                 jobRepository.save(job);
 
+            case "author-to-json-file":
+
+                authorService.authorsToJsonFile(job);
+
+                job.setLastStop(ZonedDateTime.now());
+
+                jobRepository.save(job);
+
             default:
                 break;
         }

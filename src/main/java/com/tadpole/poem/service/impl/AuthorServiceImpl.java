@@ -297,6 +297,33 @@ public class AuthorServiceImpl implements AuthorService {
     public void authorsToJsonFile(Job job) {
 
         ObjectMapper objectMapper = new ObjectMapper();
+        List<Author> authors = authorRepository.findAll();
+
+        List<com.tadpole.poem.json.Author> jsonAuthors = Lists.newArrayList();
+        for (Author author: authors) {
+
+            com.tadpole.poem.json.Author jsonAuthor = com.tadpole.poem.json.Author.builder()
+                .id(author.getId())
+                .age(author.getAge())
+                .avatar(author.getAvatarFileName())
+                .birth(StringUtils.isEmpty(author.getBirthYear())? null: Integer.valueOf(author.getBirthYear()))
+                .death(StringUtils.isEmpty(author.getDieYear())? null: Integer.valueOf(author.getDieYear()))
+                .name(author.getName())
+                .desc(author.getDescription())
+               // .period(author.getP)
+                .zi(author.getZi())
+                .hao(author.getHao())
+                .build();
+
+            jsonAuthors.add(jsonAuthor);
+        }
+
+        String stringFilesPath = configurationRepository.findByIdentifier("JSON_FILE_PATH").getContent();
+        try {
+            objectMapper.writeValue(new File(stringFilesPath + "author.json"), jsonAuthors);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -335,15 +362,42 @@ public class AuthorServiceImpl implements AuthorService {
                         authorRepository.save(author);
                     }
 
-                } else if (numbers.size() == 1) {
+                } else {
 
+                    if (originalBirthday.contains("生卒年不详")) {
+                        originalBirthday = "生卒年不详";
+                    }
+
+                    if (originalBirthday.length() < 40) {
+                        author.setAgeDescription(originalBirthday);
+                    }
+
+                    authorRepository.save(author);
                 }
             }
 
-            println(originalBirthday);
+            calculateAge(job);
 
         }
 
-        
+    }
+
+    private void calculateAge(Job job) {
+
+        List<Author> authors = authorRepository.findByBirthYearIsNotNullAndDieYearIsNotNullAndAgeIsNull();
+
+        for (Author author: authors) {
+
+            Integer age = Math.abs(Integer.valueOf(author.getDieYear()) - Integer.valueOf(author.getBirthYear()));
+            author.setAge(age);
+
+            if (age < 15) {
+                author.setBirthYear(null);
+                author.setDieYear(null);
+                author.setAge(null);
+            }
+
+            authorRepository.save(author);
+        }
     }
 }

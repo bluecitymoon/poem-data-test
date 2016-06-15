@@ -61,6 +61,8 @@
         <spring-security-oauth2.version>2.0.9.RELEASE</spring-security-oauth2.version>
         <spring-security.version>4.0.4.RELEASE</spring-security.version>
         <springfox.version>2.4.0</springfox.version>
+        <version.lombok>1.16.4</version.lombok>
+
         <start-class>com.tadpole.poem.PoemdataApp</start-class>
     </properties>
 
@@ -372,6 +374,11 @@
             <version>1.8.3</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${version.lombok}</version>
+        </dependency>
     </dependencies>
 
     <repositories>

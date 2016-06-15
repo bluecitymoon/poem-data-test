@@ -28,6 +28,9 @@
                     <th jh-sort-by="link"><span>Link</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="description"><span>Description</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="visitCount"><span>Visit Count</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="referenceAvatar"><span>Reference Avatar</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="age"><span>Age</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="ageDescription"><span>Age Description</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -39,10 +42,13 @@
                     <td>{{author.dieYear}}</td>
                     <td>{{author.zi}}</td>
                     <td>{{author.hao}}</td>
-                    <td><img src="{{author.avatarFileName}}" style="border-radius: 50%"></td>
+                    <td>{{author.avatarFileName}}</td>
                     <td>{{author.link}}</td>
-                    <td style="width:50%">{{author.description}}</td>
+                    <td>{{author.description}}</td>
                     <td>{{author.visitCount}}</td>
+                    <td>{{author.referenceAvatar}}</td>
+                    <td>{{author.age}}</td>
+                    <td>{{author.ageDescription}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

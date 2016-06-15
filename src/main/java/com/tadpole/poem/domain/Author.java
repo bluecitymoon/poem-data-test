@@ -53,6 +53,12 @@ public class Author implements Serializable {
     @Column(name = "reference_avatar")
     private String referenceAvatar;
 
+    @Column(name = "age")
+    private Integer age;
+
+    @Column(name = "age_description")
+    private String ageDescription;
+//
 //    @OneToMany(mappedBy = "author")
 //    @JsonIgnore
 //    private Set<Poem> poems = new HashSet<>();
@@ -145,6 +151,22 @@ public class Author implements Serializable {
         this.referenceAvatar = referenceAvatar;
     }
 
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getAgeDescription() {
+        return ageDescription;
+    }
+
+    public void setAgeDescription(String ageDescription) {
+        this.ageDescription = ageDescription;
+    }
+
 //    public Set<Poem> getPoems() {
 //        return poems;
 //    }
@@ -187,6 +209,8 @@ public class Author implements Serializable {
             ", description='" + description + "'" +
             ", visitCount='" + visitCount + "'" +
             ", referenceAvatar='" + referenceAvatar + "'" +
+            ", age='" + age + "'" +
+            ", ageDescription='" + ageDescription + "'" +
             '}';
     }
 }

@@ -51,6 +51,14 @@
         {
             "fieldName": "referenceAvatar",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "age",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "ageDescription",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20160425032338",
