@@ -131,7 +131,6 @@ public class DetailResourceServiceImpl implements DetailResourceService {
 
             int i = 1;
 
-            boolean getNextPage = true;
             while (true) {
 
                 String fullUrl = job.getTarget() + author.getName() + "&page=" + i;

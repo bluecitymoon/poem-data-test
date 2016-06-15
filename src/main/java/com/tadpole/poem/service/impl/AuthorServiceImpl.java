@@ -17,6 +17,10 @@ import com.tadpole.poem.domain.Author;
 import com.tadpole.poem.repository.AuthorRepository;
 import com.tadpole.poem.service.util.*;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.cloudfoundry.com.fasterxml.jackson.databind.ObjectMapper;
@@ -380,6 +384,46 @@ public class AuthorServiceImpl implements AuthorService {
 
         }
 
+    }
+
+    @Override
+    public void grabAuthorLinks(Job job) {
+
+        String baseHref = job.getTarget();
+
+        int page = 1;
+        while(true) {
+            String fullUrl = baseHref + page;
+
+            try {
+                Document document = Jsoup.connect(fullUrl).get();
+
+                Elements elements = document.getElementsByClass("sonsauthor");
+
+                if (elements.size() == 0) {
+                    break;
+                }
+
+                for (Element element: elements) {
+
+                    Elements links = element.getElementsByTag("a");
+                    if (links.size() == 3) {
+
+                        Element imgElement = links.first();
+                        String href = imgElement.attr("href");
+
+                        Author author = authorRepository.findByLink(href);
+
+                    }
+                    Elements imgElements = element.getElementsByTag("img");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            page++;
+        }
     }
 
     private void calculateAge(Job job) {

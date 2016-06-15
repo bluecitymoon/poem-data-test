@@ -179,6 +179,7 @@ public class JobServiceImpl implements JobService {
 
                 jobRepository.save(job);
 
+                break;
             case "author-to-json-file":
 
                 authorService.authorsToJsonFile(job);
@@ -187,6 +188,16 @@ public class JobServiceImpl implements JobService {
 
                 jobRepository.save(job);
 
+                break;
+
+            case "grab-author-links":
+
+                authorService.grabAuthorLinks(job);
+
+                job.setLastStop(ZonedDateTime.now());
+
+                jobRepository.save(job);
+                break;
             default:
                 break;
         }

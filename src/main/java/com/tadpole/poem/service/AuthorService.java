@@ -55,4 +55,6 @@ public interface AuthorService {
     void authorsToJsonFile(Job job);
 
     void parseBirthDeathYear(Job job);
+
+    void grabAuthorLinks(Job job);
 }
