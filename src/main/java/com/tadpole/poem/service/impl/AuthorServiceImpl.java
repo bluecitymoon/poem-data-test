@@ -8,6 +8,9 @@ import com.gargoylesoftware.htmlunit.html.HtmlParagraph;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.tadpole.poem.domain.*;
+import com.tadpole.poem.domain.Author;
+import com.tadpole.poem.domain.Poem;
+import com.tadpole.poem.json.*;
 import com.tadpole.poem.repository.ConfigurationRepository;
 import com.tadpole.poem.repository.JobLogRepository;
 import com.tadpole.poem.repository.PoemRepository;
@@ -269,23 +272,22 @@ public class AuthorServiceImpl implements AuthorService {
 
         ObjectMapper objectMapper = new ObjectMapper();
         List<Poem> poems = poemRepository.findAll();
+
+        List<com.tadpole.poem.json.Poem> jsonPoems = Lists.newArrayList();
         for (Poem poem : poems) {
 
             try {
 
-                poem.setContent(PinyinTranslator.removeGuahaoThingsInString(poem.getContent()).replaceAll("\\t|\\r|\\n|\\s+", ""));
-                poem.setTitlePinyin(PinyinTranslator.getFullSpell(poem.getTitle()));
+                com.tadpole.poem.json.Poem jsonPoem = com.tadpole.poem.json.Poem.builder()
+                    .id(poem.getId())
+                    .title(poem.getTitle())
+                    .content(PinyinTranslator.removeGuahaoThingsInString(poem.getContent()).replaceAll("\\t|\\r|\\n|\\s+", ""))
+                    .authorId(poem.getAuthor() == null ? null : poem.getAuthor().getId())
+                    .avatar(poem.getAuthor() == null ? null : poem.getAuthor().getAvatarFileName() == null ? null : poem.getAuthor().getAvatarFileName())
+                    .pinyin(poem.getTitlePinyin())
+                    .build();
 
-                if (poem.getAuthor() != null) {
-
-                    poem.getAuthor().setReferenceAvatar("");
-                    poem.getAuthor().setLink("");
-
-                    if (poem.getAuthor().getDescription() != null) {
-                        poem.getAuthor().setDescription(poem.getAuthor().getDescription().replaceAll("\\t", ""));
-                    }
-
-                }
+                jsonPoems.add(jsonPoem);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -294,7 +296,7 @@ public class AuthorServiceImpl implements AuthorService {
 
         String stringFilesPath = configurationRepository.findByIdentifier("JSON_FILE_PATH").getContent();
         try {
-            objectMapper.writeValue(new File(stringFilesPath + "Poems.json"), poems);
+            objectMapper.writeValue(new File(stringFilesPath + "Poems.json"), jsonPoems);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -307,17 +309,17 @@ public class AuthorServiceImpl implements AuthorService {
         List<Author> authors = authorRepository.findAll();
 
         List<com.tadpole.poem.json.Author> jsonAuthors = Lists.newArrayList();
-        for (Author author: authors) {
+        for (Author author : authors) {
 
             com.tadpole.poem.json.Author jsonAuthor = com.tadpole.poem.json.Author.builder()
                 .id(author.getId())
                 .age(author.getAge())
                 .avatar(author.getAvatarFileName())
-                .birth(StringUtils.isEmpty(author.getBirthYear())? null: Integer.valueOf(author.getBirthYear()))
-                .death(StringUtils.isEmpty(author.getDieYear())? null: Integer.valueOf(author.getDieYear()))
+                .birth(StringUtils.isEmpty(author.getBirthYear()) ? null : Integer.valueOf(author.getBirthYear()))
+                .death(StringUtils.isEmpty(author.getDieYear()) ? null : Integer.valueOf(author.getDieYear()))
                 .name(author.getName())
                 .desc(author.getDescription())
-               // .period(author.getP)
+                // .period(author.getP)
                 .zi(author.getZi())
                 .hao(author.getHao())
                 .build();
@@ -395,7 +397,7 @@ public class AuthorServiceImpl implements AuthorService {
         String baseHref = job.getTarget();
 
         int page = 1;
-        while(true) {
+        while (true) {
             String fullUrl = baseHref + page;
 
             try {
@@ -407,7 +409,7 @@ public class AuthorServiceImpl implements AuthorService {
                     break;
                 }
 
-                for (Element element: elements) {
+                for (Element element : elements) {
 
                     Elements links = element.getElementsByTag("a");
 
@@ -463,7 +465,7 @@ public class AuthorServiceImpl implements AuthorService {
 
                         }
 
-                    } else if (links.size()  == 2 ) {
+                    } else if (links.size() == 2) {
 
                         Element nameElement = links.first();
                         String href = nameElement.attr("href");
@@ -520,7 +522,7 @@ public class AuthorServiceImpl implements AuthorService {
 
         List<Author> authors = authorRepository.findByBirthYearIsNotNullAndDieYearIsNotNullAndAgeIsNull();
 
-        for (Author author: authors) {
+        for (Author author : authors) {
 
             Integer age = Math.abs(Integer.valueOf(author.getDieYear()) - Integer.valueOf(author.getBirthYear()));
             author.setAge(age);
