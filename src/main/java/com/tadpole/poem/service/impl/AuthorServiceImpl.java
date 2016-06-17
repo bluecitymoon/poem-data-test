@@ -311,6 +311,13 @@ public class AuthorServiceImpl implements AuthorService {
         List<com.tadpole.poem.json.Author> jsonAuthors = Lists.newArrayList();
         for (Author author : authors) {
 
+            String description = author.getDescription().replaceAll("　+", "");
+            if (description.startsWith(author.getName())) {
+
+                int firstCommaIndex  = description.indexOf("，");
+
+                description = description.substring(firstCommaIndex + 1);
+            }
             com.tadpole.poem.json.Author jsonAuthor = com.tadpole.poem.json.Author.builder()
                 .id(author.getId())
                 .age(author.getAge())
@@ -318,8 +325,8 @@ public class AuthorServiceImpl implements AuthorService {
                 .birth(StringUtils.isEmpty(author.getBirthYear()) ? null : Integer.valueOf(author.getBirthYear()))
                 .death(StringUtils.isEmpty(author.getDieYear()) ? null : Integer.valueOf(author.getDieYear()))
                 .name(author.getName())
-                .desc(author.getDescription())
-                // .period(author.getP)
+                .desc(description)
+                .period(author.getPeriod())
                 .zi(author.getZi())
                 .hao(author.getHao())
                 .build();
