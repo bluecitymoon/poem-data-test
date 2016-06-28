@@ -2,7 +2,7 @@
 # Project Specific
 ######################
 /target/www/**
-
+/src/main/webapp/content/images/authors/**
 ######################
 # Node
 ######################

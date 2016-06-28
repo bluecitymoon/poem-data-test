@@ -16,8 +16,7 @@ import lombok.NoArgsConstructor;
 public class Poem {
     private Long id;
     private String title;
-    private String content;
+    private String[] content;
     private Long authorId;
     private String pinyin;
-    private String avatar;
 }

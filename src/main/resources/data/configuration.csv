@@ -1,0 +1,6 @@
+id,"identifier","content"
+1,"SEARCH_BASE","http://so.gushiwen.org"
+2,"FILL-AUTHOR-RETRY","10"
+3,"AUTHOR-AVATAR-BATH","/Users/jerryjiang/Documents/workspace/poem-data-test/src/main/webapp/content/images/authors/"
+4,"AUTHOR-FORCE-REGRAB","1"
+5,"JSON_FILE_PATH","/Users/jerryjiang/Documents/workspace/poem-data-test/src/main/webapp/content/json/"

@@ -276,14 +276,16 @@ public class AuthorServiceImpl implements AuthorService {
         List<com.tadpole.poem.json.Poem> jsonPoems = Lists.newArrayList();
         for (Poem poem : poems) {
 
+            String content = poem.getContent().replaceAll("\\t|\\r|\\n|\\s+", "");
+            String regex = "，|。|？|、|！";
             try {
 
                 com.tadpole.poem.json.Poem jsonPoem = com.tadpole.poem.json.Poem.builder()
                     .id(poem.getId())
                     .title(poem.getTitle())
-                    .content(PinyinTranslator.removeGuahaoThingsInString(poem.getContent()).replaceAll("\\t|\\r|\\n|\\s+", ""))
+                    .content(content.split(regex))
                     .authorId(poem.getAuthor() == null ? null : poem.getAuthor().getId())
-                    .avatar(poem.getAuthor() == null ? null : poem.getAuthor().getAvatarFileName() == null ? null : poem.getAuthor().getAvatarFileName())
+                   // .avatar(poem.getAuthor() == null ? null : poem.getAuthor().getAvatarFileName() == null ? null : poem.getAuthor().getAvatarFileName())
                     .pinyin(poem.getTitlePinyin())
                     .build();
 
@@ -296,7 +298,7 @@ public class AuthorServiceImpl implements AuthorService {
 
         String stringFilesPath = configurationRepository.findByIdentifier("JSON_FILE_PATH").getContent();
         try {
-            objectMapper.writeValue(new File(stringFilesPath + "Poems.json"), jsonPoems);
+            objectMapper.writeValue(new File(stringFilesPath + "poem.json"), jsonPoems);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -325,7 +327,7 @@ public class AuthorServiceImpl implements AuthorService {
                 .birth(StringUtils.isEmpty(author.getBirthYear()) ? null : Integer.valueOf(author.getBirthYear()))
                 .death(StringUtils.isEmpty(author.getDieYear()) ? null : Integer.valueOf(author.getDieYear()))
                 .name(author.getName())
-                .desc(description)
+                .desc(description.split("。|；"))
                 .period(author.getPeriod())
                 .zi(author.getZi())
                 .hao(author.getHao())

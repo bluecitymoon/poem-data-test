@@ -21,7 +21,7 @@ public class Author implements Serializable{
     private Integer age;
     private Integer birth;
     private Integer death;
-    private String desc;
+    private String[] desc;
     private String period;
     private String avatar;
     private String zi;
