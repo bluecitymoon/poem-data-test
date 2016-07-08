@@ -190,7 +190,7 @@ public class AuthorServiceImpl implements AuthorService {
             String fileName = patheElements.get(patheElements.size() - 1);
 
             String realFileName = System.currentTimeMillis() + "-" + fileName;
-            String fullFilePath = configurationRepository.findByIdentifier("AUTHOR-AVATAR-BATH").getContent() + realFileName;
+            String fullFilePath = configurationRepository.findByIdentifier("AUTHOR-AVATAR-BATH").getContent() + fileName;
 
             try {
                 image.saveAs(new File(fullFilePath));
@@ -276,17 +276,26 @@ public class AuthorServiceImpl implements AuthorService {
         List<com.tadpole.poem.json.Poem> jsonPoems = Lists.newArrayList();
         for (Poem poem : poems) {
 
-            String content = poem.getContent().replaceAll("\\t|\\r|\\n|\\s+", "");
-            String regex = "，|。|？|、|！";
+            String content = poem.getContent().replaceAll("\\t|\\r|\\n|\\s+", "").replaceAll(" 　　","");
+            content = PinyinTranslator.removeGuahaoThingsInString(content);
+
+            poem.setContent(content);
+
+            poemRepository.save(poem);
+
+            String regex = "，|。|？|、|！|,|;|；|!|\\?";
+
+            String[] contents = content.split(regex);
+
             try {
 
                 com.tadpole.poem.json.Poem jsonPoem = com.tadpole.poem.json.Poem.builder()
                     .id(poem.getId())
                     .title(poem.getTitle())
-                    .content(content.split(regex))
+                    .content(contents)
                     .authorId(poem.getAuthor() == null ? null : poem.getAuthor().getId())
                    // .avatar(poem.getAuthor() == null ? null : poem.getAuthor().getAvatarFileName() == null ? null : poem.getAuthor().getAvatarFileName())
-                    .pinyin(poem.getTitlePinyin())
+                    //.pinyin(poem.getTitlePinyin())
                     .build();
 
                 jsonPoems.add(jsonPoem);

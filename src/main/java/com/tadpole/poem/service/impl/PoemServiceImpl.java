@@ -1,9 +1,6 @@
 package com.tadpole.poem.service.impl;
 
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
-import com.gargoylesoftware.htmlunit.html.HtmlDivision;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.tadpole.poem.domain.*;
 import com.tadpole.poem.repository.AuthorRepository;
 import com.tadpole.poem.repository.DetailResourceRepository;
@@ -13,6 +10,7 @@ import com.tadpole.poem.service.PoemService;
 import com.tadpole.poem.repository.PoemRepository;
 import com.tadpole.poem.service.util.GrabPageProcessor;
 import com.tadpole.poem.service.util.PinyinTranslator;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -25,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.io.IOException;
-import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -109,8 +105,22 @@ public class PoemServiceImpl implements PoemService {
      */
     public Poem grabSinglePoem(Job job, DetailResource detailResource, WebClient webClient) {
 
+        Poem existedPoem = poemRepository.findByResourceId(detailResource.getOutsideId());
 
-        String fullUrl = job.getTarget() + detailResource.getUrl();
+        JobLog jobLog = new JobLog();
+        if (existedPoem != null) {
+
+            jobLog.setJob(job);
+            jobLog.setStart(ZonedDateTime.now());
+            jobLog.setMessage("skip saving existed poem" + existedPoem.getTitle());
+
+            jobLogRepository.save(jobLog);
+
+            return null;
+        }
+
+
+        String fullUrl = "http://so.gushiwen.org" + detailResource.getUrl();
 
         Poem poem = new Poem();
         poem.setTitle(detailResource.getTitle());
@@ -118,9 +128,9 @@ public class PoemServiceImpl implements PoemService {
         poem.setTag(detailResource.getTag());
         poem.setResourceId(detailResource.getOutsideId());
         try {
-            HtmlPage htmlPage = webClient.getPage(new URL(fullUrl));
 
-            Document document = Jsoup.parse(htmlPage.getWebResponse().getContentAsString());
+           Document document = Jsoup.connect(fullUrl).get();
+
             Element element = document.getElementsByClass("son2").last();
             Elements elements = element.getElementsByTag("p");
 
@@ -157,44 +167,65 @@ public class PoemServiceImpl implements PoemService {
 
             poem.setAnthorName(authorName);
 
-            Element contentElement = null;
+            //poem content is placed in <p>
             if (elements.size() > 3) {
-                contentElement = elements.last();
+                String content = "";
+                for (int i = 3; i < elements.size(); i++) {
+                    Element singleContentElement = elements.get(i);
 
-                poem.setContent(PinyinTranslator.removeGuahaoThingsInString(contentElement.text().trim()));
+                    String singleLineContent = singleContentElement.text().trim();
+                    if (StringUtils.isNotEmpty(singleLineContent)) {
+                        content += PinyinTranslator.removeGuahaoThingsInString(singleLineContent);
+                    }
+                }
+
+                poem.setContent(content);
+
+                //poem content placed directly.
             } else {
-
                 String poemContentTotal = element.text().substring(element.text().indexOf("原文：") + "原文：".length());
                 poem.setContent(PinyinTranslator.removeGuahaoThingsInString(poemContentTotal));
             }
 
-        } catch (IOException e) {
-
-            System.out.println(e.getMessage());
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
 
         }
 
-        Poem existedPoem = poemRepository.findByResourceId(detailResource.getOutsideId());
 
-        JobLog jobLog = new JobLog();
-        if (existedPoem == null) {
+        //too long, I don't want it
+        if (StringUtils.isNotEmpty(poem.getContent()) && poem.getContent().length() > 20000) {
+            detailResource.setActive(false);
 
-            poemRepository.save(poem);
+            detailResourceRepository.save(detailResource);
 
-            jobLog.setJob(job);
-            jobLog.setStart(ZonedDateTime.now());
-            jobLog.setMessage("save new poem " + poem.getTitle());
+        } else if (StringUtils.isEmpty(poem.getContent())){
 
+            System.out.println(poem.toString());
         } else {
 
-            jobLog.setJob(job);
-            jobLog.setStart(ZonedDateTime.now());
-            jobLog.setMessage("skip saving existed poem" + poem.getTitle());
+            try {
+
+                poemRepository.save(poem);
+
+                jobLog.setJob(job);
+                jobLog.setStart(ZonedDateTime.now());
+                jobLog.setMessage("save new poem " + poem.getTitle());
+
+
+                jobLogRepository.save(jobLog);
+
+            } catch (org.springframework.orm.jpa.JpaSystemException e) {
+
+                jobLog.setJob(job);
+                jobLog.setStart(ZonedDateTime.now());
+                jobLog.setMessage("save poem with exception " + poem.getTitle() + " resource = " + detailResource.getUrl());
+
+                return null;
+            }
+
         }
-        jobLogRepository.save(jobLog);
 
         return poem;
     }
@@ -204,7 +235,8 @@ public class PoemServiceImpl implements PoemService {
      * @return
      */
     public boolean grabAllPoems(Job job) {
-        List<DetailResource> urls = detailResourceRepository.findAll();
+
+        List<DetailResource> urls = detailResourceRepository.findByVisitCountIsNull();
 
         WebClient webClient = GrabPageProcessor.newWebClient();
 
