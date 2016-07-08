@@ -276,12 +276,15 @@ public class AuthorServiceImpl implements AuthorService {
         List<com.tadpole.poem.json.Poem> jsonPoems = Lists.newArrayList();
         for (Poem poem : poems) {
 
-            String content = poem.getContent().replaceAll("\\t|\\r|\\n|\\s+", "").replaceAll(" 　　","");
+            String originalContent = new String(poem.getContent());
+            String content = poem.getContent().replaceAll("\\t|\\r|\\n|\\s+|\"|“|”", "");
             content = PinyinTranslator.removeGuahaoThingsInString(content);
 
             poem.setContent(content);
 
-            poemRepository.save(poem);
+            if (!originalContent.equals(content)) {
+                poemRepository.save(poem);
+            }
 
             String regex = "，|。|？|、|！|,|;|；|!|\\?";
 

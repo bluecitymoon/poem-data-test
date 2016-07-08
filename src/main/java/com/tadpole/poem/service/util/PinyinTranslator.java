@@ -601,14 +601,12 @@ public class PinyinTranslator {
 
     public static String removeGuahaoThingsInString(String input) {
 
-        if (!input.contains("(") || !input.contains(")")) {
-            return input;
-        }
         char[] originalArray = input.toCharArray();
         List<Character> dest = new ArrayList<>(originalArray.length);
 
         boolean commentArea = false;
         for (char singleChar : originalArray) {
+
 
             if (singleChar == '　') {
                 continue;
